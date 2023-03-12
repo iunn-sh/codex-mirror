@@ -4,8 +4,6 @@ repo_url: https://github.com/iunn-sh/codex-mirror
 theme:
   name: material
   palette:
-    # - primary: teal
-    # - accent: teal
     # Palette toggle for light mode
     - scheme: default
       toggle:
