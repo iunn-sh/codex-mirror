@@ -1,17 +1,5 @@
-# Welcome to MkDocs
+# Codex Mirror for Formosa & Pescadores
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Personal project to track change of laws. USE AT YOUR OWN DISGRESSION.
 
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Please refer to [全國法規資料庫](https://law.moj.gov.tw/) for the most accurate and up-to-date material.

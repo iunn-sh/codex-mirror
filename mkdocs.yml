@@ -18,3 +18,18 @@ theme:
         name: Switch to light mode
       primary: teal
       accent: teal
+  font:
+    text: Noto Sans Traditional Chinese
+nav:
+    - "中華民國憲法.md"
+    - "中華民國憲法增修條文.md"
+    - "行政程序法.md"
+    - "行政訴訟法.md"
+    - "中華民國刑法.md"
+    - "刑事訴訟法.md"
+    - "民法.md"
+    - "民事訴訟法.md"
+    - "公司法.md"
+    - "保險法.md"
+    - "證券交易法.md"
+    - "勞動基準法.md"

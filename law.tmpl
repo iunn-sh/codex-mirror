@@ -1,0 +1,12 @@
+# {{ .LawName }}
+{{ range $lawarticle := .LawArticles }}
+{{- if (eq $lawarticle.ArticleType "C")}}
+## {{ $lawarticle.ArticleContent }}
+{{ end }}
+{{- if (eq $lawarticle.ArticleType "A")}}
+### {{ $lawarticle.ArticleNo }}
+{{ end }}
+{{- if (eq $lawarticle.ArticleType "A")}}
+{{ $lawarticle.ArticleContent }}
+{{ end }}
+{{- end }}
