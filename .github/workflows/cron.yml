@@ -1,8 +1,8 @@
-name: fetch
+name: cron-fetch
 on:
   schedule:
     # Runs "at minute 55 past every hour" (see https://crontab.guru)
-    - cron: '44 * * * *'
+    - cron: '46 * * * *'
 jobs:
   build:
     name: Build
