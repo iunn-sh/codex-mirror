@@ -6,11 +6,12 @@ import (
 	"net/http"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
     "log"
     "archive/zip"
     "path/filepath"
     "strings"
+    "bytes"
+    "text/template"
 )
 
 type LawArticle struct {
@@ -46,21 +47,23 @@ type Codex struct {
 	Laws       []Law  `json:"Laws"`
 }
 
-func Parse(data []byte){
-	var codex Codex
-	json.Unmarshal(data, &codex)
-	fmt.Println(codex)
-	for _, p := range codex.Laws {
-		fmt.Println(p)
-	}
-	jsondata, _ := json.Marshal(codex)
-	fmt.Println(string(jsondata))
+func Cleanup(dir string) error {
+    files, err := filepath.Glob(filepath.Join(dir, "*"))
+    if err != nil {
+        return err
+    }
+    for _, file := range files {
+        err = os.RemoveAll(file)
+        if err != nil {
+            return err
+        }
+    }
+    return nil
 }
 
 // DownloadFile will download a url to a local file. It's efficient because it will
 // write as it downloads and not load the whole file into memory.
 func Download(filepath string, url string) error {
-
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {
@@ -77,6 +80,7 @@ func Download(filepath string, url string) error {
 
 	// Write the body to file
 	_, err = io.Copy(out, resp.Body)
+	fmt.Println(filepath + " is downloaded")
 	return err
 }
 
@@ -144,31 +148,110 @@ func Unzip(src, dest string) error {
 	return nil
 }
 
+func ParseAndSplit(srcfile string, destdir string) error {
+	fileContent, err := os.Open(srcfile)
+	if err != nil {
+		return err
+	}
+	defer fileContent.Close()
+
+	byteResult, _ := io.ReadAll(fileContent)
+	// Cleanup data https://stackoverflow.com/questions/31398044/got-error-invalid-character-%C3%AF-looking-for-beginning-of-value-from-json-unmar
+	byteResult = bytes.TrimPrefix(byteResult, []byte("\xef\xbb\xbf"))
+	var codex Codex
+	if err := json.Unmarshal(byteResult, &codex); err != nil {
+		return err
+	}
+	fmt.Println("Codex UpdateDate: " + codex.UpdateDate)
+	for _, p := range codex.Laws {
+		fo, _ := json.MarshalIndent(p, "", " ")
+		_ = os.WriteFile(filepath.Join(destdir ,p.LawName+".json"), fo, 0644)
+		fmt.Println(p.LawName + " is extracted")
+	}
+
+	return nil
+}
+
+func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
+	lawFile, err := os.Open(jsonfile)
+	if err != nil {
+		return err
+	}
+	defer lawFile.Close()
+	byteResult, _ := io.ReadAll(lawFile)
+	var law Law
+	if err := json.Unmarshal(byteResult, &law); err != nil {
+		return err
+	}
+	// fmt.Println(law.UpdateDate)
+	// Create the file
+	// mdpath, err := filepath.Abs("./docs/")
+	fmt.Println(law.LawName + " is parsed from .json")
+	f, err := os.Create(filepath.Join(destdir, law.LawName+".md"))
+	if err != nil {
+	    return err
+	}
+	// Execute the template to the file.
+	tmpl, err := template.New(tmplfile).ParseFiles(tmplfile)
+	if err != nil {
+		return err
+	}
+	err = tmpl.Execute(f, law)
+	if err != nil {
+		return err
+	}
+	// Close the file when done.
+	f.Close()
+	fmt.Println(law.LawName + " is processed to .md")
+
+	return nil
+}
+
 func main() {
 	// TODO: error handling
+	// TODO: consistant logging method
 
 	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
-	err := Download("./depot/ChLaw.json.zip", fileUrl)
+	depotdir, err := filepath.Abs("./depot")
+	zippath := filepath.Join(depotdir ,"ChLaw.json.zip")
+
+	err = Cleanup(depotdir)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Downloaded: " + fileUrl)
+	fmt.Println("Remove files in: " + depotdir)
 
-    err = Unzip("./depot/ChLaw.json.zip", "./depot")
+	err = Download(zippath, fileUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Unzipped: " + "ChLaw.json.zip")
+	fmt.Println("Downloaded: " + fileUrl + " to " + zippath)
 
-	files, err := ioutil.ReadDir("./depot/")
-    if err != nil {
-        log.Fatal(err)
-    }
-    for _, file := range files {
-        fmt.Println(file.Name(), file.Size())
-    }
+    err = Unzip(zippath, depotdir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Unzipped: " + zippath)
 
-	data := []byte(`{"UpdateDate":"2023/3/3 上午 12:00:00","Laws":[{"LawLevel":"法律","LawName":"政黨及其附隨組織不當取得財產處理條例","LawURL":"https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=A0030286","LawCategory":"行政＞不當黨產處理委員會＞黨產目","LawModifiedDate":"20160810","LawEffectiveDate":"","LawEffectiveNote":"","LawAbandonNote":"","LawHasEngVersion":"Y","EngLawName":"The Act Governing the Settlement of Ill-gotten Properties by Political Parties and Their Affiliate Organizations","LawAttachements":[],"LawHistories":"1.中華民國一百零五年八月十日總統華總一義字第 10500091191  號令制\r\n  定公布全文 34 條；並自公布日施行","LawForeword":"","LawArticles":[{"ArticleType":"C","ArticleNo":"","ArticleContent":"   第 一 章 總則"},{"ArticleType":"A","ArticleNo":"第 1 條","ArticleContent":"為調查及處理政黨、附隨組織及其受託管理人不當取得之財產，建立政黨公平競爭環境，健全民主政治，以落實轉型正義，特制定本條例。"},{"ArticleType":"A","ArticleNo":"第 2 條","ArticleContent":"行政院設不當黨產處理委員會（以下簡稱本會）為本條例之主管機關，不受中央行政機關組織基準法規定之限制。\r\n本會依法進行政黨、附隨組織及其受託管理人不當取得財產之調查、返還、追徵、權利回復及本條例所定之其他事項。"},{"ArticleType":"A","ArticleNo":"第 3 條","ArticleContent":"本會對於政黨、附隨組織及其受託管理人不當取得財產之處理，除本條例另有規定外，不適用其他法律有關權利行使期間之規定。"},{"ArticleType":"A","ArticleNo":"第 4 條","ArticleContent":"本條例用詞，定義如下：\r\n一、政黨：指於中華民國七十六年七月十五日前成立並依動員戡亂時期人民團體法規定備案者。\r\n二、附隨組織：指獨立存在而由政黨實質控制其人事、財務或業務經營之法人、團體或機構；曾由政黨實質控制其人事、財務或業務經營，且非以相當對價轉讓而脫離政黨實質控制之法人、團體或機構。\r\n三、受託管理人：指受前二款所稱政黨、附隨組織之委託而管理或受讓財產而管理之第三人。\r\n四、不當取得財產：指政黨以違反政黨本質或其他悖於民主法治原則之方式，使自己或其附隨組織取得之財產。"},{"ArticleType":"A","ArticleNo":"第 5 條","ArticleContent":"政黨、附隨組織自中華民國三十四年八月十五日起取得，或其自中華民國三十四年八月十五日起交付、移轉或登記於受託管理人，並於本條例公布日時尚存在之現有財產，除黨費、政治獻金、競選經費之捐贈、競選費用補助金及其孳息外，推定為不當取得之財產。\r\n政黨、附隨組織自中華民國三十四年八月十五日起以無償或交易時顯不相當之對價取得之財產，除黨費、政治獻金、競選經費之捐贈、競選費用補助金及其孳息外，雖於本條例公布日已非政黨、附隨組織或其受託管理人所有之財產，亦推定為不當取得之財產。"},{"ArticleType":"A","ArticleNo":"第 6 條","ArticleContent":"經本會認定屬不當取得之財產，應命該政黨、附隨組織、受託管理人，或無正當理由以無償或顯不相當對價，自政黨、附隨組織或其受託管理人取得或轉得之人於一定期間內移轉為國有、地方自治團體或原所有權人所有。\r\n前項財產移轉範圍，以移轉時之現存利益為限。但以不相當對價取得者，應扣除取得該財產之對價。\r\n第一項規定之財產，如已移轉他人而無法返還時，應就政黨、附隨組織、其受託管理人或無正當理由以無償或顯不相當對價，自政黨、附隨組織或其受託管理人取得或轉得之人之其他財產追徵其價額。"},{"ArticleType":"A","ArticleNo":"第 7 條","ArticleContent":"善意第三人於前條應移轉為國有、地方自治團體或原所有權人所有財產上存有之租賃權、地上權、抵押權或典權等權利，不因此而受影響。"},{"ArticleType":"C","ArticleNo":"","ArticleContent":"   第 二 章 申報、調查及處理"},{"ArticleType":"A","ArticleNo":"第 8 條","ArticleContent":"政黨、附隨組織及其受託管理人應於本條例施行之日起一年內向本會申報下列財產：\r\n一、政黨或附隨組織自中華民國三十四年八月十五日起至本條例公布日止所取得及其交付、移轉或登記於受託管理人之現有財產。\r\n二、政黨或附隨組織於前款期間內取得或其交付、移轉或登記於受託管理人之財產，但現已非政黨、附隨組織或其受託管理人之財產。\r\n前項應申報之財產如下：\r\n一、不動產、船舶、汽車及航空器。\r\n二、一定金額以上之存款、外幣、有價證券及其他具有相當價值之財產。\r\n三、一定金額以上之債權、債務及對於各種事業之投資。\r\n前項之一定金額及其他具有相當價值之財產，由本會公告之。\r\n第一項、第二項之申報，應載明財產之來源、種類、取得方式、取得日期、變動情形及其對價，如訂有書面契約者，並應檢附其契約等相關資料；其格式由本會定之。\r\n本會得主動調查認定政黨之附隨組織及其受託管理人，並通知其於受本會通知日起四個月內向本會申報第一項之財產。\r\n本會除受理第一項及前項之申報外，亦得主動調查政黨、附隨組織或其受託管理人財產之來源、取得方式、取得日期、變動情形及其對價。"},{"ArticleType":"A","ArticleNo":"第 9 條","ArticleContent":"依第五條第一項推定為不當取得之財產，自本條例公布之日起禁止處分之。但有下列情形之一者，不在此限：\r\n一、履行法定義務或其他正當理由。\r\n二、符合本會所定許可要件，並經本會決議同意。\r\n前項第一款所定情形，應於處分後三個月內，製作清冊報本會備查。\r\n第一項所定其他正當理由及許可要件，由本會另定之。\r\n第一項所定禁止處分之財產，如依法設有登記者，本會得囑託該管登記機關辦理限制登記；如係寄託或保管於金融機構之存款或有價證券，得通知金融機構凍結其帳戶；如係對他人之金錢債權，得通知債務人向清償地之法院提存所辦理清償提存，並應將該提存之事實陳報本會備查。非經本會同意，提存物受取權人不得領取。依本項所為之提存，生清償之效力。\r\n政黨、附隨組織或其受託管理人違反第一項規定之處分行為，不生效力。\r\n關於第一項第一款之範圍認定有爭議，或不服第一項第二款之決議者，利害關係人得於收受通知後三十日內向本會申請復查；對於復查決定不服者，得於收受通知後二個月不變期間內提起行政訴訟。"},{"ArticleType":"A","ArticleNo":"第 10 條","ArticleContent":"政黨、附隨組織或其受託管理人依第八條規定應申報之財產，經本會調查認定有故意或重大過失隱匿、遺漏或對於重要事項為不實說明者，該財產推定為不當取得之財產，並依第六條規定處理。"},{"ArticleType":"A","ArticleNo":"第 11 條","ArticleContent":"本會之調查，應恪遵正當法律程序，以符合比例原則之方式為之。\r\n本會之調查，得為下列行為：\r\n一、向有關機關（構）調取卷宗及資料，亦得向稅捐稽徵機關調取財產、所得、營業、納稅等資料，不受稅捐稽徵法第三十三條規定之限制。\r\n二、要求法人、團體或個人提供帳冊、文件及其他必要之資料或證物。\r\n三、派員前往有關機關（構）、團體或事業之所在地、事務所、營業所或其他場所，或個人之住居所為必要之調查。\r\n四、以書面通知相關之人陳述意見。通知書中應記載詢問目的、時間、地點，得否委託他人到場及不到場所生之效果。\r\n五、其他必要之調查方法。\r\n前項調查，發現有與政黨、附隨組織或其受託管理人財產之來源、取得方式相關之資料者，得為複製、留存備份，必要時並得臨時封存有關資料或證物，或攜去、留置其全部或一部。但其封存、攜去或留置之範圍及期間，以供調查、鑑定或其他為保全之目的所必要者為限。\r\n封存、攜去或留置屬於中央或地方機關（構）持有之資料或證物者，應經主管長官允許。但主管長官除有妨害重大國家利益之正當理由，不得拒絕。\r\n攜去之資料或證物，原持有之機關（構）應加蓋圖章，並由調查人員發給收據。\r\n本會派員執行調查時，應出示有關執行職務之證明文件；其未出示者，受調查者得拒絕之。\r\n為執行本條之調查，本會於必要時，得請各級政府機關或警察機關協助並得委託會計師及其他專業人士協助調查、鑑價及查核相關資料。"},{"ArticleType":"A","ArticleNo":"第 12 條","ArticleContent":"受調查之機關（構）、法人、團體或個人，不得規避、拒絕或妨礙調查。"},{"ArticleType":"A","ArticleNo":"第 13 條","ArticleContent":"向本會提供政黨、附隨組織或其交付、移轉或登記於受託管理人之財產所在、來源、取得方式或處分等相關資訊，並因而使本會發現並追回政黨、附隨組織或其交付、移轉或登記於受託管理人隱匿、遺漏申報之財產或不當取得財產者，本會得酌予獎勵。\r\n本會對於舉發人之身分應予保密。\r\n第一項獎勵條件、方式及其他相關事項，由本會另定之。"},{"ArticleType":"A","ArticleNo":"第 14 條","ArticleContent":"本會依第六條規定所為之處分，或第八條第五項就政黨之附隨組織及其受託管理人認定之處分，應經公開之聽證程序。"},{"ArticleType":"A","ArticleNo":"第 15 條","ArticleContent":"調查結果應經本會委員會決議後，作成處分書。處分書應載明下列事項：\r\n一、處分相對人之姓名、名稱及地址。\r\n二、受調查之財產及其權利現狀。\r\n三、財產處理方式之主旨、事實及理由。\r\n四、有附款者，附款之內容。\r\n五、本會之名稱。\r\n六、發文字號及年、月、日。\r\n七、不服本處分之救濟方法、期間及其受理機關。\r\n前項第三款所定財產處理方式之主旨，應依第六條規定記載應移轉財產之種類、數量、追徵價額、履行期間及受移轉之對象。\r\n第一項之處分書，應刊載於行政院公報及網站對外公告之。"},{"ArticleType":"A","ArticleNo":"第 16 條","ArticleContent":"不服本會經聽證所為之處分者，得於處分書送達後二個月不變期間內，提起行政訴訟。"},{"ArticleType":"A","ArticleNo":"第 17 條","ArticleContent":"主管機關為進行本條例所定調查之相關事項，得訂定調查程序辦法。"},{"ArticleType":"C","ArticleNo":"","ArticleContent":"   第 三 章 組織"},{"ArticleType":"A","ArticleNo":"第 18 條","ArticleContent":"本會置委員十一人至十三人，任期四年，由行政院院長派（聘）之，並指定其中一人為主任委員，一人為副主任委員。\r\n主任委員、副主任委員或委員出缺時，行政院院長應於一個月內依前項程序派（聘）之，繼任者之任期至原任期屆滿之日為止。\r\n委員中具有同一黨籍者，不得超過委員總額三分之一，且單一性別之人數不得少於三分之一。\r\n本會主任委員，特任，對外代表本會。"},{"ArticleType":"A","ArticleNo":"第 19 條","ArticleContent":"本會置主任秘書一人，承主任委員之命，處理會務，並指揮監督所屬人員；置工作人員若干人，辦理本會幕僚作業；各相關機關並應指派專人負責協調、連繫事宜。\r\n為實現本條例之立法目的，於非委員會開會期間，如遇有迫切且應立即處理之事項，主任委員或其指定代理委員得於未逾越本會職權之必要範圍內採取緊急措施。\r\n本會組織規程由行政院定之。"},{"ArticleType":"A","ArticleNo":"第 20 條","ArticleContent":"本會委員應超出黨派之外，依據法律公正獨立行使職權，於任期中不得參與政黨活動。\r\n違反前項規定者，經本會委員會議決議通過後，由行政院院長解除其職務。"},{"ArticleType":"A","ArticleNo":"第 21 條","ArticleContent":"本會委員有下列情形之一者，應由行政院院長予以免除或解除其職務：\r\n一、死亡或因罹患疾病致不能執行職務。\r\n二、辭職。\r\n三、受監護或輔助宣告，尚未撤銷。\r\n四、違法、廢弛職務或其他失職行為。\r\n五、因刑事案件受羈押或經起訴。"},{"ArticleType":"A","ArticleNo":"第 22 條","ArticleContent":"本會委員會議，每月至少舉行一次，必要時得召開臨時會議，均由主任委員為主席；主任委員不克出席時，由副主任委員代理之；主任委員、副主任委員均不克出席時，由其他委員互推一人為主席。\r\n開會時應有全體委員過半數之出席始得開會，會議之決議以出席委員過半數之同意為通過。但有下列情形之一者，不在此限：\r\n一、依第六條規定所為之決議，應有全體委員三分之二以上出席，出席委員過半數同意。\r\n二、依第二十條第二項規定所為之決議，應有全體委員三分之二以上出席，全體委員三分之二以上同意。"},{"ArticleType":"A","ArticleNo":"第 23 條","ArticleContent":"本會應就業務執行現況與不當取得財產之調查進度，即時公布於不當黨產專屬網站，並應每半年向立法院提出報告。"},{"ArticleType":"A","ArticleNo":"第 24 條","ArticleContent":"依本條例所取回或追徵其價額之不當取得財產，本會應定期公告清單，並揭載於不當黨產專屬網站。\r\n前項清單，應包含該財產之名稱、內容、取得方式、現狀及其價額。"},{"ArticleType":"A","ArticleNo":"第 25 條","ArticleContent":"依本條例所取回或追徵其價額之不當取得財產，如原係政黨或其附隨組織自我國人民或於我國設立之法人或團體所取得者，原權利人或依法繼受該權利之人得於前條公告之日起一年內，向本會申請回復權利。\r\n前項權利回復處分，以原物返還為原則，不能依原物返還者，給付相當之價額。但不得超過依本條例所實際取回或追徵價額之財產價值。\r\n第一項申請回復權利之程序及其他相關事項之辦法，由本會另定之。"},{"ArticleType":"C","ArticleNo":"","ArticleContent":"   第 四 章 罰則"},{"ArticleType":"A","ArticleNo":"第 26 條","ArticleContent":"政黨、附隨組織或其受託管理人違反第八條第一項或第五項規定，逾期未申報者，處新臺幣一百萬元以上五百萬元以下罰鍰。每逾十日，得按次連續處罰。\r\n前項處罰已達五次者，其財產推定為不當取得之財產，依第六條規定處理之。"},{"ArticleType":"A","ArticleNo":"第 27 條","ArticleContent":"政黨、附隨組織或其受託管理人違反第九條第一項規定者，處該處分財產價值之一倍至三倍罰鍰。\r\n違反第九條第二項規定者，處新臺幣十萬元以上五十萬元以下罰鍰，並得限期命其申報，屆期不申報者，得按次連續處罰。"},{"ArticleType":"A","ArticleNo":"第 28 條","ArticleContent":"受調查之機關（構）、法人、團體或個人違反第十二條規定者，處新臺幣十萬元以上五十萬元以下罰鍰。"},{"ArticleType":"A","ArticleNo":"第 29 條","ArticleContent":"對於本會之罰鍰處分不服者，得依法提起行政救濟。"},{"ArticleType":"C","ArticleNo":"","ArticleContent":"   第 五 章 附則"},{"ArticleType":"A","ArticleNo":"第 30 條","ArticleContent":"依本條例所處之公法上金錢給付義務，經通知限期履行，屆期未履行者，由本會或管理機關依法移送強制執行。\r\n依本條例應交付管理機關之財產，處分相對人未於處分書所定期限履行者，由管理機關依法強制執行。"},{"ArticleType":"A","ArticleNo":"第 31 條","ArticleContent":"第十五條所定處分書送達生效後，應辦理不動產登記者，由本會會同管理機關囑託登記機關登記為國有、地方自治團體或原所有權人所有，得免提出原所有權狀或他項權利證明書。\r\n前項規定，於有價證券、船舶、航空器須辦理登記者，準用之。\r\n前條及前二項財產之執行及移轉，免繳納執行費、稅捐及規費。"},{"ArticleType":"A","ArticleNo":"第 32 條","ArticleContent":"依本條例所處之罰鍰，經限期繳納，屆期仍不繳納者，主管機關得於公職人員選舉罷免法第四十三條第六項規定應撥給政黨補助金款項內，逕予扣除抵充。"},{"ArticleType":"A","ArticleNo":"第 33 條","ArticleContent":"本條例施行細則，由行政院定之。"},{"ArticleType":"A","ArticleNo":"第 34 條","ArticleContent":"本條例自公布日施行。"}]},{"LawLevel":"法律","LawName":"促進轉型正義條例","LawURL":"https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=A0030296","LawCategory":"行政＞院本部＞通用目","LawModifiedDate":"20220527","LawEffectiveDate":"","LawEffectiveNote":"","LawAbandonNote":"","LawHasEngVersion":"Y","EngLawName":"Act on Promoting Transitional Justice","LawAttachements":[],"LawHistories":"1.中華民國一百零六年十二月二十七日總統華總一義字第 10600155841  \r\n  號令制定公布全文 21 條；並自公布日施行\r\n2.中華民國一百十一年五月二十七日總統華總一義字第 11100045951  號\r\n  令修正公布第 2、6、20、21 條條文；並增訂第 6-1～6-3、11-1、11-\r\n  2、20-1、20-2 條條文；施行日期，由行政院定之\r\n  中華民國一百十一年五月三十日行政院院臺綜字第 1110176498 號令發\r\n  布第 11-1、11-2 條條文，定自一百十一年五月三十一日施行\r\n  中華民國一百十一年十月二十五日行政院院臺正字第 1110033382 號令\r\n  發布第 2、6～6-3、20～20-2  條條文，定自一百十一年十月二十八日\r\n  施行","LawForeword":"","LawArticles":[{"ArticleType":"A","ArticleNo":"第 1 條","ArticleContent":"為促進轉型正義及落實自由民主憲政秩序，特制定本條例。\r\n威權統治時期違反自由民主憲政秩序之不法行為與結果，其轉型正義相關處理事宜，依本條例規劃、推動之。本條例未規定者，適用其他相關法律之規定。"},{"ArticleType":"A","ArticleNo":"第 2 條","ArticleContent":"本條例主管機關為促進轉型正義委員會（以下簡稱促轉會），不受中央行政機關組織基準法第五條第三項、第三十二條、第三十六條及行政院組織法第九條規定之限制。\r\n促轉會隸屬於行政院，為二級獨立機關，除政黨及其附隨組織不當取得財產處理條例另有規定外，依第四條至第七條規定，規劃、推動下列事項：\r\n一、開放政治檔案。\r\n二、清除威權象徵、保存不義遺址。\r\n三、平復司法不法及行政不法、還原歷史真相，並促進社會和解。\r\n四、不當黨產之處理及運用。\r\n五、其他轉型正義事項。\r\n"},{"ArticleType":"A","ArticleNo":"第 3 條","ArticleContent":"本條例用語定義如下：\r\n一、威權統治時期，指自中華民國三十四年八月十五日起至八十一年十一月六日止之時期。\r\n二、政治檔案，指由政府機關（構）、政黨、附隨組織及黨營機構所保管，於威權統治時期，與二二八事件、動員戡亂體制、戒嚴體制相關之檔案或各類紀錄及文件；已裁撤機關（構）之檔案亦適用之。\r\n三、政黨，指依據政黨及其附隨組織不當取得財產處理條例第四條第一款所稱者。\r\n四、附隨組織，指依據政黨及其附隨組織不當取得財產處理條例第四條第二款所稱者。\r\n五、黨營機構，指獨立存在但現由政黨實質控制其人事、財務或業務經營之法人、團體或機構。\r\n六、政府機關（構），指中央、地方各級機關、行政法人及受政府機關委託行使公權力之個人、法人或團體，及各級機關設立之實（試）驗、研究、文教、醫療等機構、財團法人或公營事業機構。"},{"ArticleType":"A","ArticleNo":"第 4 條","ArticleContent":"威權統治時期，違反自由民主憲政秩序而蒐集、製作或建立之政治檔案相關資料，應予徵集、彙整、保存，並兼顧檔案當事人之隱私權與資訊自由、及轉型正義研究與民主法治及人權教育之需要，區別類型開放應用。\r\n為完整回復威權統治時期相關歷史事實並促進社會和解，促轉會應主動進行真相調查，依本條所徵集之檔案資料，邀集各相關當事人陳述意見，以還原人權受迫害之歷程，並釐清壓迫體制加害者及參與者責任。\r\n促轉會應基於相關陳述、調查結果及檔案資料，撰寫調查報告，並規劃人事清查處置及相關救濟程序。\r\n真相調查之執行程序及步驟，由促轉會另以辦法定之。"},{"ArticleType":"A","ArticleNo":"第 5 條","ArticleContent":"為確立自由民主憲政秩序、否定威權統治之合法性及記取侵害人權事件之歷史教訓，出現於公共建築或場所之紀念、緬懷威權統治者之象徵，應予移除、改名，或以其他方式處置之。\r\n威權統治時期，統治者大規模侵害人權事件之發生地，應予保存或重建，並規劃為歷史遺址。"},{"ArticleType":"A","ArticleNo":"第 6 條","ArticleContent":"威權統治時期，違反自由民主憲政秩序、侵害公平審判原則所追訴或審判之刑事案件，應重新調查，不適用國家安全法第九條規定，以平復司法不法、彰顯司法正義、導正法治及人權教育，並促進社會和解。\r\n前項平復司法不法，得以識別加害者並追究其責任、回復並賠償被害者或其家屬之名譽及權利損害，及還原並公布司法不法事件之歷史真相等方式為之。\r\n下列案件，如基於同一原因事實而受刑事審判者，其有罪判決與其刑、保安處分及沒收之宣告、單獨宣告之保安處分、單獨宣告之沒收，或其他拘束人身自由之裁定或處分，於本條例施行之日均視為撤銷，並公告之：\r\n一、受難者或受裁判者依二二八事件處理及賠償條例、戒嚴時期不當叛亂暨匪諜審判案件補償條例與戒嚴時期人民受損權利回復條例之規定，而獲得賠償、補償或回復受損權利之刑事審判案件。\r\n二、前款以外經促轉會依職權或申請，認屬依本條例應平復司法不法之刑事審判案件。\r\n檢察官或軍事檢察官於第一項刑事案件為追訴所為拘束人身自由或對財產之處分，準用前項規定。\r\n依前二項規定撤銷之有罪判決、單獨宣告之裁定或處分、有關追訴之處分等前科紀錄，應塗銷之。\r\n第三項第二款及第四項申請人對於促轉會駁回申請之處分不服者，自送達駁回處分之次日起二十日內，得以第一項之事由就該刑事有罪判決、單獨宣告之裁定或處分、有關追訴之處分向高等法院及其分院設立之專庭提起上訴、抗告或聲請撤銷之。\r\n被告死亡者，刑事訴訟法有關被告不到庭不能進行審判及第三百零三條第五款之規定，於前項規定不適用之。\r\n高等法院及其分院設立專庭審理第六項之案件，其組織及相關辦法，由司法院定之。\r\n"},{"ArticleType":"A","ArticleNo":"第 6-1 條","ArticleContent":"威權統治時期，政府機關或公務員為達成鞏固威權統治之目的，違反自由民主憲政秩序，所為侵害人民生命、人身自由或剝奪其財產所有權之處分或事實行為，由促轉會依職權或申請確認不法，以平復行政不法。\r\n前條第三項第一款案件之受難者或受裁判者，於獲得賠償、補償或回復受損權利範圍內所受之前項處分或事實行為，於本條例修正施行之日起，均視為不法。\r\n前二項處分經確認或視為不法者，於本條例修正施行之日起，視為撤銷。\r\n前條第二項平復司法不法之方式，於本條準用之。\r\n"},{"ArticleType":"A","ArticleNo":"第 6-2 條","ArticleContent":"第六條第三項第二款、第四項及前條第一項之申請，由受不法追訴、審判、行政處分或事實行為而權利受損之人為之。但權利受損之人死亡者，由家屬為之。\r\n為辦理前二條所定之平復司法不法及行政不法事項，該管中央主管機關應組成審查會，依審查會之決議作成處分或相關處置。\r\n前項審查會之組成、委員資格、遴（解）聘、任期、迴避，調查程序、範圍、方式、審查、決議、保密義務及其他相關事項之辦法，由該管中央主管機關定之。\r\n關於辦理第六條第二項識別及處置加害者之相關事宜，另以法律定之。\r\n"},{"ArticleType":"A","ArticleNo":"第 6-3 條","ArticleContent":"第六條第二項及第六條之一第四項準用第六條第二項被害者或其家屬之權利回復事宜，另以法律定之。\r\n"},{"ArticleType":"A","ArticleNo":"第 7 條","ArticleContent":"為落實自由民主憲政秩序、促成政黨公平競爭，自中華民國三十四年八月十五日起取得之不當黨產，除可明確認定其原屬之所有權人或其繼承人外，應移轉為國家所有，並由中央成立特種基金，作為推動轉型正義、人權教育、長期照顧、社會福利政策及轉型正義相關文化事務之用。\r\n不當取得財產之調查、返還、追徵、權利回復及其他相關事項，由不當黨產處理委員會依政黨及其附隨組織不當取得財產處理條例為之。"},{"ArticleType":"A","ArticleNo":"第 8 條","ArticleContent":"促轉會置委員九人，由行政院長提名經立法院同意後任命之。行政院長為提名時，應指定一人為主任委員，一人為副主任委員。主任委員、副主任委員及其他委員三人為專任；其餘四人為兼任。但全體委員中，同一政黨之人數不得逾三人；同一性別之人數不得少於三人。\r\n立法委員及監察委員不得兼任促轉會委員。\r\n促轉會主任委員，特任，對外代表促轉會；副主任委員，職務比照簡任第十四職等；其餘專任委員職務比照簡任第十三職等。\r\n委員任期至促轉會依第十一條第二項解散為止。但行政院長依第十一條第一項規定延長促轉會任務期間時，得依第一項程序更換主任委員、副主任委員或其他專、兼任委員。\r\n委員有下列情形之一者，得由行政院院長予以免除或解除其職務：\r\n一、死亡或因罹患疾病致不能執行職務。\r\n二、辭職。\r\n三、受監護或輔助宣告，尚未撤銷。\r\n四、違法、廢弛職務或其他失職行為。\r\n五、因刑事案件受羈押或經起訴。\r\n委員因故出缺者，依第一項程序補齊。"},{"ArticleType":"A","ArticleNo":"第 9 條","ArticleContent":"促轉會設四任務小組，分別研究、規劃及推動第二條第二項各款所列事項，由副主任委員及其他專任委員三人擔任召集人；兼任委員四人，並分別以每小組一人之方式加入，協助處理相關事務。\r\n前項任務小組，得個別聘請無給職顧問二人至三人；一年一聘。"},{"ArticleType":"A","ArticleNo":"第 10 條","ArticleContent":"促轉會得指派、借調或聘僱適當人員兼充研究或辦事人員。\r\n前項借調人員，行政機關不得拒絕。\r\n促轉會所需相關經費由行政院預算支應。"},{"ArticleType":"A","ArticleNo":"第 11 條","ArticleContent":"促轉會應於二年內就第二條第二項所列事項，以書面向行政院長提出含完整調查報告、規劃方案及具體實施步驟在內之任務總結報告；有制定或修正法律及命令之必要者，並同時提出相關草案。其於二年內未能完成者，得報請行政院長延長之；每次以一年為限。\r\n促轉會於完成前項任務後解散，由行政院長公布任務總結報告。\r\n在第一項期間內，促轉會每半年應以書面向行政院長提出任務進度報告；其就第二條第二項事項所為之規劃已具體可行者，並得隨時以書面提請行政院長召集各相關機關（構）依規劃結果辦理。"},{"ArticleType":"A","ArticleNo":"第 11-1 條","ArticleContent":"促轉會依前條第二項規定解散後，行政院應設推動轉型正義會報，由行政院院長擔任召集人，負責第二條第二項所定事項及前條第一項任務總結報告之統合、協調及監督。\r\n"},{"ArticleType":"A","ArticleNo":"第 11-2 條","ArticleContent":"促轉會解散後，國家應辦理之轉型正義事項，依下列各款規定移交予各該中央主管機關辦理：\r\n一、平復司法不法、行政不法，與識別及處置加害者事項，由法務主管機關辦理。\r\n二、清除威權象徵事項，由內政主管機關辦理。\r\n三、保存不義遺址事項，由文化主管機關辦理。\r\n四、照顧療癒政治受難者及其家屬之政治暴力創傷事項，由衛生福利主管機關辦理。\r\n五、轉型正義教育事項，由教育主管機關辦理。\r\n六、促進轉型正義基金之收支、保管及運用事項，由國家發展委員會辦理。\r\n七、其他轉型正義事項，由行政院指定之；前六款所定事項需變更中央主管機關者，亦同。\r\n前項各款事項，涉及各機關（構）之職掌或業務時，各級政府機關（構）應配合辦理。\r\n第一項第一款至第三款之中央主管機關執行各該款所定事項，得依第十四條至第十七條規定辦理；國家發展委員會辦理第二條第二項第一款及第十八條事項，亦同。\r\n"},{"ArticleType":"A","ArticleNo":"第 12 條","ArticleContent":"促轉會應依據法律，獨立行使職權。\r\n促轉會委員應超出黨派以外，依法獨立行使職權，於任職期間不得參加政黨活動。"},{"ArticleType":"A","ArticleNo":"第 13 條","ArticleContent":"促轉會之決議，應經過半數委員之出席，及出席委員過半數之同意行之。\r\n促轉會依第十一條第一項及第三項規定向行政院長提出之書面報告，其定稿應經全體委員過半數同意通過。\r\n促轉會委員對前項報告，得加註不同意見或協同意見。"},{"ArticleType":"A","ArticleNo":"第 14 條","ArticleContent":"促轉會為完成第十一條第一項及第三項之任務，得以下列行為調查相關事項：\r\n一、通知有關機關（構）、團體、事業或個人到場陳述事實經過或陳述意見。\r\n二、要求有關機關（構）、團體、事業或個人提出檔案冊籍、文件及其他必要之資料或證物。但審判中案件資料之調閱，應經繫屬法院之同意。\r\n三、派員前往有關機關（構）、團體、事業或個人之辦公處所、事務所、營業所或其他場所為必要之調查或勘驗。\r\n四、委託鑑定與委託研究。\r\n五、委託其他機關（構）辦理特定案件或事項。\r\n六、其他必要之調查行為。\r\n各機關接受前項第五款之委託後，應即辦理，並以書面答復辦理結果。\r\n促轉會調查人員依法執行職務時，應出示相關證明文件；其未出示者，受調查者得拒絕之。\r\n其他關於本條例所定調查之相關事項，由促轉會另以調查程序辦法定之。"},{"ArticleType":"A","ArticleNo":"第 15 條","ArticleContent":"促轉會調查人員得於必要時，臨時封存有關資料或證物，或攜去、留置其全部或一部。\r\n封存、攜去或留置屬於中央或地方機關（構）持有之資料或證物者，應經主管長官允許。但主管長官，除經證明確有妨害重大國家利益，並於七日內取得行政法院假處分裁定同意者外，不得拒絕。\r\n攜去之資料或證物，原持有之機關（構）應加蓋圖章，並由調查人員發給收據。"},{"ArticleType":"A","ArticleNo":"第 16 條","ArticleContent":"依本條例規定接受調查之有關機關（構）、團體、事業或有關人員，無正當理由不得規避、拒絕或妨礙調查。\r\n依本條例規定接受調查之有關人員，除有刑事訴訟法第一百八十一條規定得拒絕證言之事項外，應據其所知如實為完全陳述，並提供相關資料，不得隱匿或虛偽陳述。\r\n促轉會對於依本條例規定接受調查之有關人員，認有保護及豁免其刑責之必要者，準用證人保護法關於證人保護及豁免刑責之規定；該等人員為公務人員者，得決議免除其相關之行政責任。\r\n依本條例接受調查之有關人員，提供促轉會因其職務或業務所知悉與政黨、附隨組織或黨營機構之相關資料者，不受其對政黨、附隨組織或黨營機構所負保密義務之拘束，免除其因提供該等資料之法律責任。\r\n促轉會依本條例規定進行之調查，涉及個人資料保護法所定個人資料之使用者，視為符合該法第十六條第二款及第二十條第一項第二款所定之增進公共利益所必要之事由。\r\n違反第一項規定者，處新臺幣十萬元以上五十萬元以下罰鍰，並得按次連續處罰。"},{"ArticleType":"A","ArticleNo":"第 17 條","ArticleContent":"促轉會調查人員必要時，得知會當地政府或其他有關機關（構）予以協助。"},{"ArticleType":"A","ArticleNo":"第 18 條","ArticleContent":"政黨、附隨組織或黨營機構持有政治檔案者，應通報促轉會，經促轉會審定者，應命移歸為國家檔案。\r\n前項通報得以書面或言詞向促轉會表示；其以言詞為之者，促轉會應作成紀錄。\r\n促轉會得主動調查政黨、附隨組織或黨營機構持有政治檔案之情形，並經審定後命移歸為國家檔案。\r\n政黨、附隨組織或黨營機構移歸政治檔案以原件為原則。\r\n政黨、附隨組織或黨營機構拒絕將促轉會審定之政治檔案移歸為國家檔案者，處新臺幣一百萬元以上五百萬元以下罰鍰，並得按次連續處罰。\r\n政治檔案之徵集、彙整、保存、開放應用、研究及教育等事項，除本條例有規定外，另以法律定之。"},{"ArticleType":"A","ArticleNo":"第 19 條","ArticleContent":"明知為由政府機關（構）、政黨、附隨組織或黨營機構所保管之政治檔案，以毀棄、損壞、隱匿之方式或致令不堪用者，處五年以下有期徒刑。\r\n前項之未遂犯罰之。"},{"ArticleType":"A","ArticleNo":"第 20 條","ArticleContent":"對於促轉會之行政處分不服者，除本條例另有規定外，得於收受處分書或公告期滿之次日起三十日內向促轉會申請復查；對於復查決定不服者，得於收受決定書之次日起二個月內提起行政訴訟。\r\n"},{"ArticleType":"A","ArticleNo":"第 20-1 條","ArticleContent":"已依第六條第三項撤銷有罪判決與其刑、保安處分及沒收之宣告並公告之案件，有第六條第四項所定情形者，其撤銷效力及於同一案件中第六條第四項之處分。\r\n本條例修正施行前，依第六條第三項第二款提出申請而經促轉會駁回確定者，不得再依同款規定提出申請。\r\n"},{"ArticleType":"A","ArticleNo":"第 20-2 條","ArticleContent":"本條例於中華民國一百十一年五月十七日修正之條文施行前得提起上訴之案件，於修正施行日尚未逾救濟期間者，適用修正施行後第六條第六項之規定。\r\n"},{"ArticleType":"A","ArticleNo":"第 21 條","ArticleContent":"本條例自公布日施行。\r\n本條例修正條文施行日期，由行政院定之。\r\n"}]}]}`)
+	// TODO: deal with newline within 'ArticleContent'
+	// TODO: deal with '（刪除）' of ArticleContent (or not)
+	err = ParseAndSplit(filepath.Join(depotdir, "ChLaw.json"), depotdir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Parsed and splitted: " + "ChLaw.json.zip")
 
-	Parse(data)
+	tmplfile := "law.tmpl"
+	mddir, err := filepath.Abs("./docs/")
+
+	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
+	// TODO: read list from config file -> share list with mkdocs is even better
+	publish := []string {"中華民國憲法", "中華民國憲法增修條文", "行政程序法", "行政訴訟法", "中華民國刑法", "刑事訴訟法", "民法", "民事訴訟法", "公司法", "保險法", "證券交易法", "勞動基準法"}
+	for _, p := range publish {
+		jsonpath := filepath.Join(depotdir, p + ".json")
+		err = JsonToMarkdown(jsonpath, tmplfile, mddir)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
