@@ -1,5 +1,7 @@
 name: cron-fetch
 on:
+  push:
+    branches: [main]
   schedule:
     # Runs "at minute 55 past every hour" (see https://crontab.guru)
     - cron: '46 * * * *'
