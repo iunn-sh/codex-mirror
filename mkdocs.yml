@@ -21,6 +21,7 @@ theme:
   font:
     text: Noto Sans Traditional Chinese
 nav:
+    - Home: "index.md"
     - "中華民國憲法.md"
     - "中華民國憲法增修條文.md"
     - "行政程序法.md"
