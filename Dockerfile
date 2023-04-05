@@ -4,7 +4,6 @@ WORKDIR /app
 ADD . /app
 
 RUN cd /app
-RUN go mod init github.com/iunn-sh/codex-mirror
 RUN go build -o app
 
 ENTRYPOINT ./app
