@@ -18,5 +18,4 @@ jobs:
       uses: actions/checkout@v3
     - name: Run main.go
       run: | 
-        go mod init github.com/iunn-sh/codex-mirror
         go build .
