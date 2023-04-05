@@ -16,5 +16,9 @@ jobs:
           go-version: 1.20.x
       - name: Build
         run: go build -v ./...
-      - name: Fetch zip
+      - name: Fetch up-to-date zip
         run: go run main.go
+      - name: Auto-commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated update
