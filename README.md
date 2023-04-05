@@ -2,8 +2,6 @@
 
 # Codex Mirror for Formosa & Pescadores
 
-:construction: Work in progress
-
 Hosting on Github Pages https://iunn-sh.github.io/codex-mirror
 
 ## Local Development
