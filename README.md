@@ -1,4 +1,6 @@
-![GitHub CI](https://img.shields.io/github/actions/workflow/status/iunn-sh/codex-mirror/main.yml?logo=github&style=for-the-badge) ![GitHub CD](https://img.shields.io/github/deployments/iunn-sh/codex-mirror/github-pages?logo=github&style=for-the-badge)
+![GitHub CI](https://img.shields.io/github/actions/workflow/status/iunn-sh/codex-mirror/main.yml?logo=github&style=for-the-badge) 
+![GitHub CD](https://img.shields.io/github/deployments/iunn-sh/codex-mirror/github-pages?logo=github&style=for-the-badge)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/iunn-sh/codex-mirror?logo=go&logoColor=white&style=for-the-badge)
 
 # Codex Mirror for Formosa & Pescadores
 
