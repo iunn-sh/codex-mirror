@@ -2,6 +2,7 @@
 ![GitHub CI](https://img.shields.io/github/actions/workflow/status/iunn-sh/codex-mirror/main.yml?logo=github&style=for-the-badge) 
 ![GitHub CD](https://img.shields.io/github/deployments/iunn-sh/codex-mirror/github-pages?logo=github&style=for-the-badge)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/iunn-sh/codex-mirror?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/iunn-sh/codex-mirror?style=for-the-badge)
 
 # Codex Mirror for Formosa & Pescadores
 
