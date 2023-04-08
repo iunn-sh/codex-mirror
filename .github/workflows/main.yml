@@ -24,6 +24,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Automated update
+          add_options: '--all'
   deploy:
     needs: build
     runs-on: ubuntu-latest
