@@ -17,6 +17,7 @@ Hosting on Github Pages https://iunn-sh.github.io/codex-mirror
 docker run --rm $(docker build -t codex-mirror -q .)
 docker run --rm $(docker build -t codex-mirror --progress=plain --no-cache .) # debug
 ## with Golang (tested with 1.20)
+go fmt ./...
 go run main.go
 
 # Mkdocs Material: host frontend

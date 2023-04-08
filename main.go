@@ -1,17 +1,17 @@
 package main
 
 import (
-	"os"
-	"io"
-	"net/http"
+	"archive/zip"
+	"bytes"
 	"encoding/json"
 	"fmt"
-    "log"
-    "archive/zip"
-    "path/filepath"
-    "strings"
-    "bytes"
-    "text/template"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"text/template"
 )
 
 type LawArticle struct {
@@ -48,17 +48,17 @@ type Codex struct {
 }
 
 func Cleanup(dir string) error {
-    files, err := filepath.Glob(filepath.Join(dir, "*"))
-    if err != nil {
-        return err
-    }
-    for _, file := range files {
-        err = os.RemoveAll(file)
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+	files, err := filepath.Glob(filepath.Join(dir, "*"))
+	if err != nil {
+		return err
+	}
+	for _, file := range files {
+		err = os.RemoveAll(file)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // DownloadFile will download a url to a local file. It's efficient because it will
@@ -165,7 +165,7 @@ func ParseAndSplit(srcfile string, destdir string) error {
 	fmt.Println("Codex UpdateDate: " + codex.UpdateDate)
 	for _, p := range codex.Laws {
 		fo, _ := json.MarshalIndent(p, "", " ")
-		_ = os.WriteFile(filepath.Join(destdir ,p.LawName+".json"), fo, 0644)
+		_ = os.WriteFile(filepath.Join(destdir, p.LawName+".json"), fo, 0644)
 		fmt.Println(p.LawName + " is extracted")
 	}
 
@@ -189,7 +189,7 @@ func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
 	fmt.Println(law.LawName + " is parsed from .json")
 	f, err := os.Create(filepath.Join(destdir, law.LawName+".md"))
 	if err != nil {
-	    return err
+		return err
 	}
 	// Execute the template to the file.
 	tmpl, err := template.New(tmplfile).ParseFiles(tmplfile)
@@ -213,7 +213,7 @@ func main() {
 
 	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
 	depotdir, err := filepath.Abs("./depot")
-	zippath := filepath.Join(depotdir ,"ChLaw.json.zip")
+	zippath := filepath.Join(depotdir, "ChLaw.json.zip")
 
 	err = Cleanup(depotdir)
 	if err != nil {
@@ -227,7 +227,7 @@ func main() {
 	}
 	fmt.Println("Downloaded: " + fileUrl + " to " + zippath)
 
-    err = Unzip(zippath, depotdir)
+	err = Unzip(zippath, depotdir)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -246,9 +246,9 @@ func main() {
 
 	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
 	// TODO: read list from config file -> share list with mkdocs is even better
-	publish := []string {"中華民國憲法", "中華民國憲法增修條文", "行政程序法", "行政訴訟法", "中華民國刑法", "刑事訴訟法", "民法", "民事訴訟法", "公司法", "保險法", "證券交易法", "勞動基準法"}
+	publish := []string{"中華民國憲法", "中華民國憲法增修條文", "行政程序法", "行政訴訟法", "中華民國刑法", "刑事訴訟法", "民法", "民事訴訟法", "公司法", "保險法", "證券交易法", "勞動基準法"}
 	for _, p := range publish {
-		jsonpath := filepath.Join(depotdir, p + ".json")
+		jsonpath := filepath.Join(depotdir, p+".json")
 		err = JsonToMarkdown(jsonpath, tmplfile, mddir)
 		if err != nil {
 			log.Fatal(err)
