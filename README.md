@@ -1,13 +1,18 @@
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/iunn-sh/codex-mirror?color=00ADD8&logo=go&logoColor=white&style=for-the-badge)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/iunn-sh/codex-mirror?style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/iunn-sh/codex-mirror?style=for-the-badge)
-
-![GitHub CI](https://img.shields.io/github/actions/workflow/status/iunn-sh/codex-mirror/main.yml?logo=github&style=for-the-badge) 
-![GitHub CD](https://img.shields.io/github/deployments/iunn-sh/codex-mirror/github-pages?logo=github&style=for-the-badge)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/iunn-sh/codex-mirror?color=00ADD8&logo=go&logoColor=white&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/iunn-sh/codex-mirror?style=flat-square)
+![GitHub](https://img.shields.io/github/license/iunn-sh/codex-mirror?style=flat-square)
+![GitHub CI](https://img.shields.io/github/actions/workflow/status/iunn-sh/codex-mirror/main.yml?logo=github&style=flat-square) 
+![GitHub CD](https://img.shields.io/github/deployments/iunn-sh/codex-mirror/github-pages?logo=github&style=flat-square)
 
 # Codex Mirror for Formosa & Pescadores
 
 Hosting on Github Pages https://iunn-sh.github.io/codex-mirror
+
+| dir  		| content						| format					|
+| --------: | ----------------------------- | :------------------------ |
+| `raw`		| downloaded and unzipped files	| `.zip` / `.csv` / `.json`	|
+| `depot`	| parsed data from raw			| `.json`					|
+| `docs`	| processed data for frontend	| `.md`						|
 
 ## Local Development
 

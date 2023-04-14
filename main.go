@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -81,6 +82,7 @@ func Download(filepath string, url string) error {
 	// Write the body to file
 	_, err = io.Copy(out, resp.Body)
 	fmt.Println(filepath + " is downloaded")
+
 	return err
 }
 
@@ -165,11 +167,31 @@ func ParseAndSplit(srcfile string, destdir string) error {
 	fmt.Println("Codex UpdateDate: " + codex.UpdateDate)
 	for _, p := range codex.Laws {
 		fo, _ := json.MarshalIndent(p, "", " ")
-		_ = os.WriteFile(filepath.Join(destdir, p.LawName+".json"), fo, 0644)
-		fmt.Println(p.LawName + " is extracted")
+		if "廢" != p.LawAbandonNote {
+			_ = os.WriteFile(filepath.Join(destdir, p.LawName+".json"), fo, 0644)
+			fmt.Println("%s is extracted", p.LawName)
+		} else {
+			fmt.Println("%s was repealed -> skip", p.LawName)
+		}
 	}
 
 	return nil
+}
+
+func GetFileList(dir, ext string) []string {
+	var a []string
+	filepath.WalkDir(dir, func(s string, d fs.DirEntry, e error) error {
+		if e != nil {
+			return e
+		}
+		if filepath.Ext(d.Name()) == ext {
+			a = append(a, s)
+		}
+		return nil
+	})
+	fmt.Println("File list length: %d", len(a))
+
+	return a
 }
 
 func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
@@ -183,9 +205,6 @@ func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
 	if err := json.Unmarshal(byteResult, &law); err != nil {
 		return err
 	}
-	// fmt.Println(law.UpdateDate)
-	// Create the file
-	// mdpath, err := filepath.Abs("./docs/")
 	fmt.Println(law.LawName + " is parsed from .json")
 	f, err := os.Create(filepath.Join(destdir, law.LawName+".md"))
 	if err != nil {
@@ -212,9 +231,15 @@ func main() {
 	// TODO: consistant logging method
 
 	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
+	rawdir, err := filepath.Abs("./raw")
+	zippath := filepath.Join(rawdir, "ChLaw.json.zip")
 	depotdir, err := filepath.Abs("./depot")
-	zippath := filepath.Join(depotdir, "ChLaw.json.zip")
 
+	err = Cleanup(rawdir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Remove files in: " + rawdir)
 	err = Cleanup(depotdir)
 	if err != nil {
 		log.Fatal(err)
@@ -227,7 +252,7 @@ func main() {
 	}
 	fmt.Println("Downloaded: " + fileUrl + " to " + zippath)
 
-	err = Unzip(zippath, depotdir)
+	err = Unzip(zippath, rawdir)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -235,21 +260,20 @@ func main() {
 
 	// TODO: deal with newline within 'ArticleContent'
 	// TODO: deal with '（刪除）' of ArticleContent (or not)
-	err = ParseAndSplit(filepath.Join(depotdir, "ChLaw.json"), depotdir)
+	err = ParseAndSplit(filepath.Join(rawdir, "ChLaw.json"), depotdir)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Parsed and splitted: " + "ChLaw.json.zip")
+	fmt.Println("Parsed and splitted enacted laws: " + zippath + " to " + depotdir)
 
 	tmplfile := "law.tmpl"
 	mddir, err := filepath.Abs("./docs/")
 
 	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
 	// TODO: read list from config file -> share list with mkdocs is even better
-	publish := []string{"中華民國憲法", "中華民國憲法增修條文", "行政程序法", "行政訴訟法", "中華民國刑法", "刑事訴訟法", "民法", "民事訴訟法", "公司法", "保險法", "證券交易法", "勞動基準法"}
-	for _, p := range publish {
-		jsonpath := filepath.Join(depotdir, p+".json")
-		err = JsonToMarkdown(jsonpath, tmplfile, mddir)
+	for _, p := range GetFileList(depotdir, ".json") {
+		// jsonpath := filepath.Join(depotdir, p+".json")
+		err = JsonToMarkdown(p, tmplfile, mddir)
 		if err != nil {
 			log.Fatal(err)
 		}
