@@ -169,9 +169,9 @@ func ParseAndSplit(srcfile string, destdir string) error {
 		fo, _ := json.MarshalIndent(p, "", " ")
 		if "廢" != p.LawAbandonNote {
 			_ = os.WriteFile(filepath.Join(destdir, p.LawName+".json"), fo, 0644)
-			fmt.Println("%s is extracted", p.LawName)
+			fmt.Println(p.LawName + " is extracted")
 		} else {
-			fmt.Println("%s was repealed -> skip", p.LawName)
+			fmt.Println(p.LawName + " was repealed -> skip")
 		}
 	}
 
@@ -189,7 +189,7 @@ func GetFileList(dir, ext string) []string {
 		}
 		return nil
 	})
-	fmt.Println("File list length: %d", len(a))
+	fmt.Println("File list length: ", len(a))
 
 	return a
 }
