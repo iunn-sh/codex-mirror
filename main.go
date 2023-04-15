@@ -198,7 +198,8 @@ func ParseAndSplit(srcfile string, destdir string) error {
 	for _, p := range codex.Laws {
 		fo, _ := json.MarshalIndent(p, "", " ")
 		if "廢" != p.LawAbandonNote {
-			_ = os.WriteFile(filepath.Join(destdir, TrimLawName(p.LawName) + ".json"), fo, 0644)
+			shortLawName := TrimLawName(p.LawName)
+			_ = os.WriteFile(filepath.Join(destdir, shortLawName + ".json"), fo, 0644)
 			counterEnacted++
 			log.Debug().Str("Enacted law", p.LawName).Send()
 		} else {
@@ -234,18 +235,22 @@ func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
 		return err
 	}
 	defer lawFile.Close()
+
 	byteResult, _ := io.ReadAll(lawFile)
 	var law Law
 	if err := json.Unmarshal(byteResult, &law); err != nil {
 		return err
 	}
 	log.Debug().Str("Processed from .json", law.LawName).Send()
-	f, err := os.Create(filepath.Join(destdir, TrimLawName(law.LawName) + ".md"))
+	shortLawName := TrimLawName(law.LawName)
+	f, err := os.Create(filepath.Join(destdir, shortLawName + ".md"))
 	if err != nil {
 		return err
 	}
-	// Execute the template to the file.
-	tmpl, err := template.New(tmplfile).ParseFiles(tmplfile)
+	defer f.Close()
+
+	// Execute the template to the file
+	tmpl, err := template.ParseFiles(tmplfile)
 	if err != nil {
 		return err
 	}
@@ -253,8 +258,6 @@ func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
 	if err != nil {
 		return err
 	}
-	// Close the file when done.
-	f.Close()
 	log.Debug().Str("Processed to .md", law.LawName).Send()
 
 	return nil
