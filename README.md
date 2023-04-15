@@ -23,6 +23,7 @@ docker run --rm $(docker build -t codex-mirror -q .)
 docker run --rm $(docker build -t codex-mirror --progress=plain --no-cache .) # debug
 ## with Golang (tested with 1.20)
 go fmt ./...
+go mod tidy
 go run main.go
 
 # Mkdocs Material: host frontend

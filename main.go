@@ -5,9 +5,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"io"
 	"io/fs"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -81,7 +82,7 @@ func Download(filepath string, url string) error {
 
 	// Write the body to file
 	_, err = io.Copy(out, resp.Body)
-	fmt.Println(filepath + " is downloaded")
+	log.Info().Str("Downloaded", filepath).Send()
 
 	return err
 }
@@ -164,16 +165,22 @@ func ParseAndSplit(srcfile string, destdir string) error {
 	if err := json.Unmarshal(byteResult, &codex); err != nil {
 		return err
 	}
-	fmt.Println("Codex UpdateDate: " + codex.UpdateDate)
+	log.Info().Str("Codex UpdateDate", codex.UpdateDate).Send()
+
+	counterEnacted := 0
+	counterRepealed := 0
 	for _, p := range codex.Laws {
 		fo, _ := json.MarshalIndent(p, "", " ")
 		if "廢" != p.LawAbandonNote {
 			_ = os.WriteFile(filepath.Join(destdir, p.LawName+".json"), fo, 0644)
-			fmt.Println(p.LawName + " is extracted")
+			counterEnacted++
+			log.Debug().Str("Extracted law", p.LawName).Send()
 		} else {
-			fmt.Println(p.LawName + " was repealed -> skip")
+			counterRepealed++
+			log.Debug().Str("Repealed law (skip)", p.LawName).Send()
 		}
 	}
+	log.Info().Int("Enacted law count", counterEnacted).Int("Repealed law count", counterRepealed).Send()
 
 	return nil
 }
@@ -189,7 +196,7 @@ func GetFileList(dir, ext string) []string {
 		}
 		return nil
 	})
-	fmt.Println("File list length: ", len(a))
+	log.Info().Int("File list length", len(a)).Send()
 
 	return a
 }
@@ -205,7 +212,7 @@ func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
 	if err := json.Unmarshal(byteResult, &law); err != nil {
 		return err
 	}
-	fmt.Println(law.LawName + " is parsed from .json")
+	log.Debug().Str("Processed from .json", law.LawName).Send()
 	f, err := os.Create(filepath.Join(destdir, law.LawName+".md"))
 	if err != nil {
 		return err
@@ -221,14 +228,19 @@ func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
 	}
 	// Close the file when done.
 	f.Close()
-	fmt.Println(law.LawName + " is processed to .md")
+	log.Debug().Str("Processed to .md", law.LawName).Send()
 
 	return nil
 }
 
 func main() {
 	// TODO: error handling
-	// TODO: consistant logging method
+
+	// UNIX Time is faster and smaller than most timestamps
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	// Default level: info
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
 	rawdir, err := filepath.Abs("./raw")
@@ -237,45 +249,47 @@ func main() {
 
 	err = Cleanup(rawdir)
 	if err != nil {
-		log.Fatal(err)
+		log.Error().Err(err).Send()
 	}
-	fmt.Println("Remove files in: " + rawdir)
+	log.Info().Str("Remove files in", rawdir).Send()
 	err = Cleanup(depotdir)
 	if err != nil {
-		log.Fatal(err)
+		log.Error().Err(err).Send()
 	}
-	fmt.Println("Remove files in: " + depotdir)
+	log.Info().Str("Remove files in", depotdir).Send()
 
 	err = Download(zippath, fileUrl)
 	if err != nil {
-		log.Fatal(err)
+		log.Error().Err(err).Send()
 	}
-	fmt.Println("Downloaded: " + fileUrl + " to " + zippath)
+	log.Info().Str("Downloaded from", fileUrl).Str("to", zippath).Send()
 
 	err = Unzip(zippath, rawdir)
 	if err != nil {
-		log.Fatal(err)
+		log.Error().Err(err).Send()
 	}
-	fmt.Println("Unzipped: " + zippath)
+	log.Info().Str("Unzipped from", zippath).Str("to", rawdir).Send()
 
 	// TODO: deal with newline within 'ArticleContent'
 	// TODO: deal with '（刪除）' of ArticleContent (or not)
 	err = ParseAndSplit(filepath.Join(rawdir, "ChLaw.json"), depotdir)
 	if err != nil {
-		log.Fatal(err)
+		log.Error().Err(err).Send()
 	}
-	fmt.Println("Parsed and splitted enacted laws: " + zippath + " to " + depotdir)
+	log.Info().Str("Parsed and splitted laws from", zippath).Str("to", depotdir).Send()
 
 	tmplfile := "law.tmpl"
 	mddir, err := filepath.Abs("./docs/")
 
 	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
 	// TODO: read list from config file -> share list with mkdocs is even better
+	counter := 0
 	for _, p := range GetFileList(depotdir, ".json") {
-		// jsonpath := filepath.Join(depotdir, p+".json")
 		err = JsonToMarkdown(p, tmplfile, mddir)
 		if err != nil {
-			log.Fatal(err)
+			log.Error().Err(err).Send()
 		}
+		counter++
 	}
+	log.Info().Int("Processed .md count", counter).Send()
 }
