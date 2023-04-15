@@ -24,7 +24,7 @@ docker run --rm $(docker build -t codex-mirror --progress=plain --no-cache .) # 
 ## with Golang (tested with 1.20)
 go fmt ./...
 go mod tidy
-go run main.go
+go run .
 
 # Mkdocs Material: host frontend
 docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material:9.1.5
