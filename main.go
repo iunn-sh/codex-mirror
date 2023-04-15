@@ -16,6 +16,62 @@ import (
 	"text/template"
 )
 
+func main() {
+	// TODO: error handling
+
+	// UNIX Time is faster and smaller than most timestamps
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	// Default level: info
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+
+	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
+	rawdir, err := filepath.Abs("./raw")
+	zippath := filepath.Join(rawdir, "ChLaw.json.zip")
+	depotdir, err := filepath.Abs("./depot")
+
+	err = Cleanup(rawdir)
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
+	err = Cleanup(depotdir)
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
+
+	err = Download(zippath, fileUrl)
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
+
+	err = Unzip(zippath, rawdir)
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
+
+	// TODO: deal with newline within 'ArticleContent'
+	// TODO: deal with '（刪除）' of ArticleContent (or not)
+	err = ParseAndSplit(filepath.Join(rawdir, "ChLaw.json"), depotdir)
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
+
+	tmplfile := "law.tmpl"
+	mddir, err := filepath.Abs("./docs/")
+
+	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
+	// TODO: read list from config file -> share list with mkdocs is even better
+	counter := 0
+	for _, p := range GetFileList(depotdir, ".json") {
+		err = JsonToMarkdown(p, tmplfile, mddir)
+		if err != nil {
+			log.Error().Err(err).Send()
+		}
+		counter++
+	}
+	log.Info().Int("Processed .md count", counter).Send()
+}
+
 func Cleanup(dir string) error {
 	files, err := filepath.Glob(filepath.Join(dir, "*"))
 	if err != nil {
@@ -27,6 +83,8 @@ func Cleanup(dir string) error {
 			return err
 		}
 	}
+	log.Info().Str("Remove files in", dir).Send()
+
 	return nil
 }
 
@@ -49,7 +107,7 @@ func Download(filepath string, url string) error {
 
 	// Write the body to file
 	_, err = io.Copy(out, resp.Body)
-	log.Info().Str("Downloaded", filepath).Send()
+	log.Info().Str("Downloaded from", url).Str("to", filepath).Send()
 
 	return err
 }
@@ -114,6 +172,7 @@ func Unzip(src, dest string) error {
 			return err
 		}
 	}
+	log.Info().Str("Unzipped from", src).Str("to", dest).Send()
 
 	return nil
 }
@@ -139,15 +198,16 @@ func ParseAndSplit(srcfile string, destdir string) error {
 	for _, p := range codex.Laws {
 		fo, _ := json.MarshalIndent(p, "", " ")
 		if "廢" != p.LawAbandonNote {
-			_ = os.WriteFile(filepath.Join(destdir, p.LawName+".json"), fo, 0644)
+			_ = os.WriteFile(filepath.Join(destdir, TrimLawName(p.LawName) + ".json"), fo, 0644)
 			counterEnacted++
-			log.Debug().Str("Extracted law", p.LawName).Send()
+			log.Debug().Str("Enacted law", p.LawName).Send()
 		} else {
 			counterRepealed++
 			log.Debug().Str("Repealed law (skip)", p.LawName).Send()
 		}
 	}
 	log.Info().Int("Enacted law count", counterEnacted).Int("Repealed law count", counterRepealed).Send()
+	log.Info().Str("Parsed and splitted enacted laws from", srcfile).Str("to", destdir).Send()
 
 	return nil
 }
@@ -180,7 +240,7 @@ func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
 		return err
 	}
 	log.Debug().Str("Processed from .json", law.LawName).Send()
-	f, err := os.Create(filepath.Join(destdir, law.LawName+".md"))
+	f, err := os.Create(filepath.Join(destdir, TrimLawName(law.LawName) + ".md"))
 	if err != nil {
 		return err
 	}
@@ -200,63 +260,14 @@ func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
 	return nil
 }
 
-func main() {
-	// TODO: error handling
+func TrimLawName(lawName string) string {
+	before, _, found := strings.Cut(lawName, "（")
 
-	// UNIX Time is faster and smaller than most timestamps
-	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
-	// Default level: info
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	shortname := lawName
+	if found {
+		log.Debug().Str("Original LawName", lawName).Str("Trimmed", before).Send()
+		shortname = before
+	} 
 
-	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
-	rawdir, err := filepath.Abs("./raw")
-	zippath := filepath.Join(rawdir, "ChLaw.json.zip")
-	depotdir, err := filepath.Abs("./depot")
-
-	err = Cleanup(rawdir)
-	if err != nil {
-		log.Error().Err(err).Send()
-	}
-	log.Info().Str("Remove files in", rawdir).Send()
-	err = Cleanup(depotdir)
-	if err != nil {
-		log.Error().Err(err).Send()
-	}
-	log.Info().Str("Remove files in", depotdir).Send()
-
-	err = Download(zippath, fileUrl)
-	if err != nil {
-		log.Error().Err(err).Send()
-	}
-	log.Info().Str("Downloaded from", fileUrl).Str("to", zippath).Send()
-
-	err = Unzip(zippath, rawdir)
-	if err != nil {
-		log.Error().Err(err).Send()
-	}
-	log.Info().Str("Unzipped from", zippath).Str("to", rawdir).Send()
-
-	// TODO: deal with newline within 'ArticleContent'
-	// TODO: deal with '（刪除）' of ArticleContent (or not)
-	err = ParseAndSplit(filepath.Join(rawdir, "ChLaw.json"), depotdir)
-	if err != nil {
-		log.Error().Err(err).Send()
-	}
-	log.Info().Str("Parsed and splitted laws from", zippath).Str("to", depotdir).Send()
-
-	tmplfile := "law.tmpl"
-	mddir, err := filepath.Abs("./docs/")
-
-	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
-	// TODO: read list from config file -> share list with mkdocs is even better
-	counter := 0
-	for _, p := range GetFileList(depotdir, ".json") {
-		err = JsonToMarkdown(p, tmplfile, mddir)
-		if err != nil {
-			log.Error().Err(err).Send()
-		}
-		counter++
-	}
-	log.Info().Int("Processed .md count", counter).Send()
+	return shortname
 }
