@@ -26,11 +26,11 @@ func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
-	rawdir, err := filepath.Abs("./raw")
+	rawdir, _ := filepath.Abs("./raw")
 	zippath := filepath.Join(rawdir, "ChLaw.json.zip")
-	depotdir, err := filepath.Abs("./depot")
+	depotdir, _ := filepath.Abs("./depot")
 
-	err = Cleanup(rawdir)
+	err := Cleanup(rawdir)
 	if err != nil {
 		log.Error().Err(err).Send()
 	}
@@ -57,7 +57,7 @@ func main() {
 	}
 
 	tmplfile := "law.tmpl"
-	mddir, err := filepath.Abs("./docs/")
+	mddir, _ := filepath.Abs("./docs/")
 
 	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
 	// TODO: read list from config file -> share list with mkdocs is even better
@@ -199,7 +199,7 @@ func ParseAndSplit(srcfile string, destdir string) error {
 		fo, _ := json.MarshalIndent(p, "", " ")
 		if "廢" != p.LawAbandonNote {
 			shortLawName := TrimLawName(p.LawName)
-			_ = os.WriteFile(filepath.Join(destdir, shortLawName + ".json"), fo, 0644)
+			_ = os.WriteFile(filepath.Join(destdir, shortLawName+".json"), fo, 0644)
 			counterEnacted++
 			log.Debug().Str("Enacted law", p.LawName).Send()
 		} else {
@@ -243,7 +243,7 @@ func JsonToMarkdown(jsonfile string, tmplfile string, destdir string) error {
 	}
 	log.Debug().Str("Processed from .json", law.LawName).Send()
 	shortLawName := TrimLawName(law.LawName)
-	f, err := os.Create(filepath.Join(destdir, shortLawName + ".md"))
+	f, err := os.Create(filepath.Join(destdir, shortLawName+".md"))
 	if err != nil {
 		return err
 	}
@@ -270,7 +270,7 @@ func TrimLawName(lawName string) string {
 	if found {
 		log.Debug().Str("Original LawName", lawName).Str("Trimmed", before).Send()
 		shortname = before
-	} 
+	}
 
 	return shortname
 }
