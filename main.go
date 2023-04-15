@@ -26,11 +26,11 @@ func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
-	rawdir, _ := filepath.Abs("./raw")
+	rawdir, err := filepath.Abs("./raw")
 	zippath := filepath.Join(rawdir, "ChLaw.json.zip")
-	depotdir, _ := filepath.Abs("./depot")
+	depotdir, err := filepath.Abs("./depot")
 
-	err := Cleanup(rawdir)
+	err = Cleanup(rawdir)
 	if err != nil {
 		log.Error().Err(err).Send()
 	}
@@ -57,7 +57,7 @@ func main() {
 	}
 
 	tmplfile := "law.tmpl"
-	mddir, _ := filepath.Abs("./docs/")
+	mddir, err := filepath.Abs("./docs/")
 
 	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
 	// TODO: read list from config file -> share list with mkdocs is even better

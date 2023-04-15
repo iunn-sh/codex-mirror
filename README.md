@@ -1,6 +1,7 @@
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/iunn-sh/codex-mirror?color=00ADD8&logo=go&logoColor=white&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/iunn-sh/codex-mirror?style=flat-square)
-![GitHub](https://img.shields.io/github/license/iunn-sh/codex-mirror?style=flat-square)
+[![Go Report Card](https://goreportcard.com/badge/github.com/iunn-sh/codex-mirror?style=flat-square)](https://goreportcard.com/report/iunn-sh/codex-mirror)
+![License](https://img.shields.io/github/license/iunn-sh/codex-mirror?style=flat-square)
 ![GitHub CI](https://img.shields.io/github/actions/workflow/status/iunn-sh/codex-mirror/main.yml?logo=github&style=flat-square) 
 ![GitHub CD](https://img.shields.io/github/deployments/iunn-sh/codex-mirror/github-pages?logo=github&style=flat-square)
 
