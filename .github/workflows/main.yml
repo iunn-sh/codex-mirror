@@ -19,7 +19,7 @@ jobs:
       - name: Build Go
         run: go build -v ./...
       - name: Run Go
-        run: go run main.go
+        run: go run .
       - name: Clean Go
         run: go clean
       - name: Auto-commit
