@@ -27,8 +27,14 @@ func main() {
 
 	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
 	rawdir, err := filepath.Abs("./raw")
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
 	zippath := filepath.Join(rawdir, "ChLaw.json.zip")
 	depotdir, err := filepath.Abs("./depot")
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
 
 	err = Cleanup(rawdir)
 	if err != nil {
@@ -58,6 +64,9 @@ func main() {
 
 	tmplfile := "law.tmpl"
 	mddir, err := filepath.Abs("./docs/")
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
 
 	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
 	// TODO: read list from config file -> share list with mkdocs is even better
