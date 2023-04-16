@@ -39,7 +39,15 @@ jobs:
         with:
           key: ${{ github.ref }}
           path: .cache
-      - name: Install mkdocs-material
-        run: pip install mkdocs-material==9.1.5
-      - name: Deploy website
-        run: mkdocs gh-deploy --force
+      - name: Get changed files of mkdocs
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            docs/**
+            mkdocs.yml
+      - name: Deploy website if any mkdocs file(s) change
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          pip install mkdocs-material==9.1.5
+          mkdocs gh-deploy --force
