@@ -206,7 +206,7 @@ func ParseAndSplit(srcfile string, destdir string) error {
 		fo, _ := json.MarshalIndent(p, "", " ")
 		if "廢" != p.LawAbandonNote {
 			shortLawName := TrimLawName(p.LawName)
-			_ = os.WriteFile(filepath.Join(destdir, shortLawName + ".json"), fo, 0644)
+			_ = os.WriteFile(filepath.Join(destdir, shortLawName+".json"), fo, 0644)
 			counterEnacted++
 			log.Debug().Str("Enacted law", p.LawName).Send()
 		} else {
