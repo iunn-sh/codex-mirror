@@ -97,8 +97,6 @@ func Cleanup(dir string) error {
 	return nil
 }
 
-// DownloadFile will download a url to a local file. It's efficient because it will
-// write as it downloads and not load the whole file into memory.
 func Download(filepath string, url string) error {
 	// Get the data
 	resp, err := http.Get(url)
@@ -208,7 +206,7 @@ func ParseAndSplit(srcfile string, destdir string) error {
 		fo, _ := json.MarshalIndent(p, "", " ")
 		if "廢" != p.LawAbandonNote {
 			shortLawName := TrimLawName(p.LawName)
-			_ = os.WriteFile(filepath.Join(destdir, shortLawName+".json"), fo, 0644)
+			_ = os.WriteFile(filepath.Join(destdir, shortLawName + ".json"), fo, 0644)
 			counterEnacted++
 			log.Debug().Str("Enacted law", p.LawName).Send()
 		} else {
@@ -224,9 +222,9 @@ func ParseAndSplit(srcfile string, destdir string) error {
 
 func GetFileList(dir, ext string) []string {
 	var a []string
-	filepath.WalkDir(dir, func(s string, d fs.DirEntry, e error) error {
-		if e != nil {
-			return e
+	filepath.WalkDir(dir, func(s string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
 		}
 		if filepath.Ext(d.Name()) == ext {
 			a = append(a, s)
