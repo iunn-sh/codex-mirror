@@ -23,6 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - needs: test
       - uses: actions/checkout@v3
       - name: Set up Go
         uses: actions/setup-go@v4
@@ -40,7 +41,7 @@ jobs:
           commit_message: Automated update
           add_options: '--all'
   deploy:
-    needs: build
+    needs: [test, build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
