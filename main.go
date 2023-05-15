@@ -67,6 +67,10 @@ func main() {
 	if err != nil {
 		log.Error().Err(err).Send()
 	}
+	err = Cleanup(mddir)
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
 
 	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
 	// TODO: read list from config file -> share list with mkdocs is even better
