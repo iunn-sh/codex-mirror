@@ -40,29 +40,48 @@ jobs:
         with:
           commit_message: Automated update
           add_options: '--all'
+#   deploy:
+#     needs: [test, build]
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#         with:
+#           fetch-depth: 2
+#       - uses: actions/setup-python@v4
+#         with:
+#           python-version: 3.x
+#       - uses: actions/cache@v2
+#         with:
+#           key: ${{ github.ref }}
+#           path: .cache
+#       - name: Get changed files of mkdocs
+#         id: changed-files-specific
+#         uses: tj-actions/changed-files@v35
+#         with:
+#           files: |
+#             docs/**
+#             mkdocs.yml
+#       - name: Deploy website if any mkdocs file(s) change
+#         if: steps.changed-files-specific.outputs.any_changed == 'true'
+#         run: |
+#           pip install mkdocs-material==9.1.5
+#           mkdocs gh-deploy --force
   deploy:
     needs: [test, build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
       - uses: actions/setup-python@v4
         with:
           python-version: 3.x
-      - uses: actions/cache@v2
+      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
+      - uses: actions/cache@v3
         with:
-          key: ${{ github.ref }}
+          key: mkdocs-material-${{ env.cache_id }}
           path: .cache
-      - name: Get changed files of mkdocs
-        id: changed-files-specific
-        uses: tj-actions/changed-files@v35
-        with:
-          files: |
-            docs/**
-            mkdocs.yml
-      - name: Deploy website if any mkdocs file(s) change
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
+          restore-keys: |
+            mkdocs-material-
+      - name: Deploy website
         run: |
-          pip install mkdocs-material==9.1.5
+          pip install mkdocs-material==9.1.12
           mkdocs gh-deploy --force
