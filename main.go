@@ -72,6 +72,15 @@ func main() {
 		log.Error().Err(err).Send()
 	}
 
+	readmefile, err := filepath.Abs("README.md")
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
+	err = CopyFile(readmefile, mddir+"/index.md")
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
+
 	// TODO: 中華民國刑法 includes 編/章 -> might need extra template to reflect that
 	// TODO: read list from config file -> share list with mkdocs is even better
 	counter := 0
@@ -220,6 +229,42 @@ func ParseAndSplit(srcfile string, destdir string) error {
 	}
 	log.Info().Int("Enacted law count", counterEnacted).Int("Repealed law count", counterRepealed).Send()
 	log.Info().Str("Parsed and splitted enacted laws from", srcfile).Str("to", destdir).Send()
+
+	return nil
+}
+
+func CopyFile(src, dst string) error {
+	buf := make([]byte, 1024)
+
+	fin, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+
+	defer fin.Close()
+
+	fout, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+
+	defer fout.Close()
+
+	for {
+		n, err := fin.Read(buf)
+		if err != nil && err != io.EOF {
+			return err
+		}
+
+		if n == 0 {
+			break
+		}
+
+		if _, err := fout.Write(buf[:n]); err != nil {
+			return err
+		}
+	}
+	log.Info().Str("Copied file from", src).Str("to", dst).Send()
 
 	return nil
 }
