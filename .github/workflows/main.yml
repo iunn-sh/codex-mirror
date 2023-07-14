@@ -3,8 +3,8 @@ on:
   push:
     branches: [main]
   schedule:
-    # Runs "at 03:18 UTC every day" (see https://crontab.guru)
-    - cron: '18 3 * * *'
+    # Runs "at 03:18 UTC every Saturday" (see https://crontab.guru)
+    - cron: '18 3 * * SAT'
 permissions:
   contents: write
 jobs:
