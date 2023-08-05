@@ -34,4 +34,10 @@ nav:
     - "保險法.md"
     - "證券交易法.md"
     - "勞動基準法.md"
-    
+markdown_extensions:
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+plugins:
+  - search
