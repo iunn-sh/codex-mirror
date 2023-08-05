@@ -83,5 +83,5 @@ jobs:
             mkdocs-material-
       - name: Deploy website
         run: |
-          pip install mkdocs-material==9.1.12
+          pip install mkdocs-material==9.1.21
           mkdocs gh-deploy --force
