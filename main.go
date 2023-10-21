@@ -26,12 +26,16 @@ func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
-	rawdir, err := filepath.Abs("./raw")
+	rawdir := filepath.Join(".", "raw")
+	err := os.MkdirAll(rawdir, os.ModePerm)
+	// rawdir, err := filepath.Abs("./raw")
 	if err != nil {
 		log.Error().Err(err).Send()
 	}
 	zippath := filepath.Join(rawdir, "ChLaw.json.zip")
-	depotdir, err := filepath.Abs("./depot")
+	depotdir := filepath.Join(".", "depot")
+	err = os.MkdirAll(depotdir, os.ModePerm)
+	// depotdir, err := filepath.Abs("./depot")
 	if err != nil {
 		log.Error().Err(err).Send()
 	}
