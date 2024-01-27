@@ -7,6 +7,9 @@ on:
     - cron: '18 3 * * SAT'
 permissions:
   contents: write
+env:
+  GO_VERSION: 1.21.x
+  MKDOCS_MATERIAL_VERSION: 9.5.5
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -15,7 +18,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.20.x
+          go-version: ${GO_VERSION}
       - name: Build Go
         run: go build -v ./...
       - name: Test Go
@@ -28,7 +31,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.20.x
+          go-version: ${GO_VERSION}
       - name: Build Go
         run: go build -v ./...
       - name: Run Go
@@ -40,32 +43,6 @@ jobs:
         with:
           commit_message: Automated update
           add_options: '--all'
-#   deploy:
-#     needs: [test, build]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#         with:
-#           fetch-depth: 2
-#       - uses: actions/setup-python@v4
-#         with:
-#           python-version: 3.x
-#       - uses: actions/cache@v2
-#         with:
-#           key: ${{ github.ref }}
-#           path: .cache
-#       - name: Get changed files of mkdocs
-#         id: changed-files-specific
-#         uses: tj-actions/changed-files@v35
-#         with:
-#           files: |
-#             docs/**
-#             mkdocs.yml
-#       - name: Deploy website if any mkdocs file(s) change
-#         if: steps.changed-files-specific.outputs.any_changed == 'true'
-#         run: |
-#           pip install mkdocs-material==9.1.5
-#           mkdocs gh-deploy --force
   deploy:
     needs: [test, build]
     runs-on: ubuntu-latest
@@ -83,5 +60,5 @@ jobs:
             mkdocs-material-
       - name: Deploy website
         run: |
-          pip install mkdocs-material==9.1.21
+          pip install mkdocs-material==${MKDOCS_MATERIAL_VERSION}
           mkdocs gh-deploy --force
