@@ -25,7 +25,7 @@ func main() {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
-	fileUrl := "https://law.moj.gov.tw/api/Ch/Law/JSON"
+	fileUrl := "https://law.moj.gov.tw/api/data/chlaw.json.zip"
 	rawdir := filepath.Join(".", "raw")
 	err := os.MkdirAll(rawdir, os.ModePerm)
 	// rawdir, err := filepath.Abs("./raw")
