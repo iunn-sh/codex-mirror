@@ -27,7 +27,7 @@
 ## with Docker
 docker run --rm $(docker build -t codex-mirror -q .)
 docker run --rm $(docker build -t codex-mirror --progress=plain --no-cache .) # debug
-## with Golang (tested with 1.20)
+## with Golang (tested with 1.24)
 go fmt ./...
 go mod tidy
 go run .
