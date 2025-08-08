@@ -35,8 +35,6 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
       - name: Build Go
         run: go build -v ./...
-      - name: Install CA
-        run: sudo apt-get install -y ca-certificates
       - name: Run Go
         run: go run .
       - name: Clean Go
