@@ -33,7 +33,7 @@ go mod tidy
 go run .
 
 # Mkdocs Material: host frontend
-docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material:9.6.14
+docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material:9.6.17
 # visit http://localhost:8000/ from browser
 ```
 

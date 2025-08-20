@@ -8,9 +8,9 @@ on:
 permissions:
   contents: write
 env:
-  GO_VERSION: 1.24.x
+  GO_VERSION: 1.25.x
   PYTHON_VERSION: 3.x
-  MKDOCS_MATERIAL_VERSION: 9.6.14
+  MKDOCS_MATERIAL_VERSION: 9.6.17
 jobs:
   test:
     runs-on: ubuntu-latest
