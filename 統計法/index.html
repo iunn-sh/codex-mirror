@@ -1,0 +1,1077 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>統計法 - Codex Mirror</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+Traditional+Chinese:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans Traditional Chinese";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Codex Mirror" class="md-header__button md-logo" aria-label="Codex Mirror" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Codex Mirror
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              統計法
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/iunn-sh/codex-mirror" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iunn-sh/codex-mirror
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Codex Mirror" class="md-nav__button md-logo" aria-label="Codex Mirror" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Codex Mirror
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/iunn-sh/codex-mirror" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iunn-sh/codex-mirror
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E6%86%B2%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    中華民國憲法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E6%86%B2%E6%B3%95%E5%A2%9E%E4%BF%AE%E6%A2%9D%E6%96%87/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    中華民國憲法增修條文
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%A1%8C%E6%94%BF%E7%A8%8B%E5%BA%8F%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    行政程序法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%A1%8C%E6%94%BF%E8%A8%B4%E8%A8%9F%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    行政訴訟法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E5%88%91%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    中華民國刑法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%88%91%E4%BA%8B%E8%A8%B4%E8%A8%9F%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    刑事訴訟法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B0%91%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    民法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B0%91%E4%BA%8B%E8%A8%B4%E8%A8%9F%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    民事訴訟法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%85%AC%E5%8F%B8%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    公司法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%BF%9D%E9%9A%AA%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    保險法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%AD%89%E5%88%B8%E4%BA%A4%E6%98%93%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    證券交易法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8B%9E%E5%8B%95%E5%9F%BA%E6%BA%96%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    勞動基準法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 一 章 總則
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 一 章 總則">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 1 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 2 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 3 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 4 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 5 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 6 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 二 章 公務統計
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 二 章 公務統計">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 7 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 8 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 9 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 三 章 統計調查
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 三 章 統計調查">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 10 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 11 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 12 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 13 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 14 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 15 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 四 章 統計資料管理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 四 章 統計資料管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 16 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 17 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 18 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 19 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 五 章 統計業務督導
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 五 章 統計業務督導">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#20" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 20 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 21 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 22 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 六 章 罰則
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 六 章 罰則">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 23 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 24 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 25 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 七 章 附則
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 七 章 附則">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 26 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 27 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">統計法</h1>
+<h2 id="_2">第 一 章 總則</h2>
+<h3 id="1">第 1 條</h3>
+<p>為提升政府統計效能，確保政府統計之客觀性及獨立性，維護政府統計品質，特制定本法。</p>
+<h3 id="2">第 2 條</h3>
+<p>政府辦理統計業務，依本法之規定。但各機關所辦專為意向性之調查及為學術研究而辦理之統計，不適用之。</p>
+<h3 id="3">第 3 條</h3>
+<p>本法用詞，定義如下：
+一、各機關：指各級政府機關（構）、公立學校、公營事業機構。
+二、各級政府主計機關：在中央為中央主計機關；在地方為直轄市政府主計處、縣（市）政府主計處、鄉（鎮、市）或直轄市山地原住民區公所主計室或主計員。
+三、公務統計：指各機關依據執行職務經過與結果而辦理之統計。
+四、統計調查：指各機關基於統計目的及業務需要，向個人、住戶、事業單位、機關或團體舉辦之調查，包括基本國勢調查、指定統計調查及一般統計調查。
+五、基本國勢調查：指對國家人口、土地、資源、經濟、社會等足資表徵國家整體基本情勢之調查。
+六、指定統計調查：指編製政府重要統計或重大政策所需，經中央主計機關公布之調查。所謂政府重要統計或重大政策所需，係指政策制定必須參用之基礎資料、依國際組織建議或進行國際比較時重要之統計或其他經中央主計機關認定之統計調查等。
+七、一般統計調查：指基本國勢調查及指定統計調查以外，各機關辦理之其他統計調查。
+八、當事人：就個人資料為資料本人；就住戶資料為代表住戶填答資料之戶內成員；就事業單位、機關或團體資料為其負責人、代表人或管理人。</p>
+<h3 id="4">第 4 條</h3>
+<p>政府應辦之統計如下：
+一、基本國勢調查之統計。
+二、各機關依職掌編製之統計。
+三、各機關其他應辦之統計。
+前項統計之資料來源如下：
+一、執行職務之紀錄或行政查報。
+二、統計調查。
+三、其他機關或團體之有關資料。</p>
+<h3 id="5">第 5 條</h3>
+<p>政府統計由有直接關係之各機關辦理。但有下列情形之一者，依其規定辦理：
+一、基本國勢調查由中央主計機關主辦。
+二、不專屬於任何機關之政府統計，由各級政府主計機關協調有關機關（構）辦理。
+中央政府得委辦地方政府辦理統計調查。</p>
+<h3 id="6">第 6 條</h3>
+<p>中央主計機關對各級政府及中央各機關統計範圍之劃分，應擬具方案，報請行政院核定實施。
+前項方案內容修正未涉及基本原則之變更者，得逕由中央主計機關與有關機關商定後分行。
+地方政府主計機關得依第一項所定方案，辦理各該政府及其所屬機關之統計範圍劃分。</p>
+<h2 id="_3">第 二 章 公務統計</h2>
+<h3 id="7">第 7 條</h3>
+<p>各機關編製公務統計，應充分利用第四條第二項第一款之資料。</p>
+<h3 id="8">第 8 條</h3>
+<p>各機關公務統計作業，由辦理統計業務之主計機構人員及有關業務人員共同辦理。</p>
+<h3 id="9">第 9 條</h3>
+<p>各機關應於第六條所定方案之統計範圍內，依所辦公務性質及業務需要，訂定公務統計方案。</p>
+<h2 id="_4">第 三 章 統計調查</h2>
+<h3 id="10">第 10 條</h3>
+<p>中央主計機關應每十年至少辦理一次人口及住宅普查，每五年至少辦理一次農林漁牧業普查、工業及服務業普查之基本國勢調查。</p>
+<h3 id="11">第 11 條</h3>
+<p>中央主計機關辦理基本國勢調查，應擬具調查方案，報請行政院核定實施，並得由各級政府成立臨時調查組織配合辦理。
+中央主計機關辦理前項調查，得要求有關機關提供必要之協助，或視業務需要借調各機關人員，並指揮監督之。</p>
+<h3 id="12">第 12 條</h3>
+<p>各機關舉辦之指定或一般統計調查，應以業務有直接關係且迫切需要者為限；有下列情形之一者，不得舉辦：
+一、所需資料可由第四條第二項第一款之資料取得。
+二、可併入性質相類似之其他調查辦理。</p>
+<h3 id="13">第 13 條</h3>
+<p>各機關向民間舉辦調查對象達中央主計機關所定一定規模之指定或一般統計調查前，應擬具調查實施計畫，並依下列程序辦理：
+一、指定統計調查應送中央主計機關核定。
+二、一般統計調查，在中央送中央主計機關核定；在地方由各直轄市及縣（市）政府主計處核定，再報送中央主計機關備查。
+依前項規定核定之統計調查，辦理機關應將核定文號於調查表上註明。
+統計調查實施計畫內容之變更或停辦，應依第一項規定程序重新報核；核定機關或中央主計機關於必要時，得要求辦理機關修正實施計畫內容或停辦已核定之統計調查。</p>
+<h3 id="14">第 14 條</h3>
+<p>執行統計調查之人員於執行職務時，應出示有關證明文件，並主動告知受查者查證方式及給予查證機會。
+前項人員，不得假借執行職務之名取得未經授權蒐集之資料。
+辦理基本國勢調查及指定統計調查之人員，進行統計調查時，任何人不得規避、妨礙或拒絕。</p>
+<h3 id="15">第 15 條</h3>
+<p>統計調查之受查者無論為個人、住戶、事業單位、機關或團體，均應依限據實答復。</p>
+<h2 id="_5">第 四 章 統計資料管理</h2>
+<h3 id="16">第 16 條</h3>
+<p>各機關發布之統計資料，應以其主管業務範圍有關者為限。
+各機關應預告統計資料項目發布訊息，除有重大情事外，不得任意變更，其相關規定由中央主計機關定之。</p>
+<h3 id="17">第 17 條</h3>
+<p>為充分利用行政資料處理系統之資料辦理政府統計，各機關建立或修改該系統時，應先徵詢所在機關辦理統計業務之主計機構需求。
+中央各機關建立或修改行政資料處理系統時，若涉及地方政府業務者，應另行徵詢各該政府主計機關及有關機關需求。
+各級政府主計機關基於整體統計需要，得要求各該政府及其所屬機關於行政資料處理系統中增修資料項目或相關功能，各機關應予配合。</p>
+<h3 id="18">第 18 條</h3>
+<p>各級政府主計機關及辦理統計業務之中央一級主計機構為統計目的需要，或減輕統計調查受查者負擔，除國家機密保護法及其他法律規定不得提供之資料外，得向各該政府及其所屬機關要求提供第四條第二項第一款及第二款之資料，各機關應予配合。</p>
+<h3 id="19">第 19 條</h3>
+<p>各機關之統計相關文件及資料，應妥善保管，並充分提供該機關執行公務運用。
+前項文件及資料屬統計調查取得之個別資料者，應予保密，除供統計目的之用外，不得作為其他用途。但統計調查實施期間經當事人書面同意者，不在此限。</p>
+<h2 id="_6">第 五 章 統計業務督導</h2>
+<h3 id="20">第 20 條</h3>
+<p>各級政府主計機關之統計業務，應受上級政府主計機關監督及指導。
+各機關辦理統計業務之主計機構應受該管上級辦理統計業務之主計機構或各該政府主計機關之監督及指導。</p>
+<h3 id="21">第 21 條</h3>
+<p>主辦統計人員與該機關長官對統計業務有不同意見時，由該管上級機關之長官及主辦統計人員處理。</p>
+<h3 id="22">第 22 條</h3>
+<p>各級政府主計機關得稽核及複查各該政府所屬機關之統計業務。
+中央主計機關得稽核及複查地方政府之統計業務。</p>
+<h2 id="_7">第 六 章 罰則</h2>
+<h3 id="23">第 23 條</h3>
+<p>違反第十四條第三項規定，規避、妨礙或拒絕辦理基本國勢調查或指定統計調查人員進行統計調查，經勸導無效後，依行政執行法規定處理之。</p>
+<h3 id="24">第 24 條</h3>
+<p>違反第十五條規定，基本國勢調查或指定統計調查之受查者經勸導後，屆期仍未答復或答復不實者，依行政執行法規定處理之。</p>
+<h3 id="25">第 25 條</h3>
+<p>各機關辦理統計業務人員違反第十四條第二項或第十九條規定者，依相關法律處理。</p>
+<h2 id="_8">第 七 章 附則</h2>
+<h3 id="26">第 26 條</h3>
+<p>本法施行細則，由中央主計機關定之。</p>
+<h3 id="27">第 27 條</h3>
+<p>本法自公布日施行。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
