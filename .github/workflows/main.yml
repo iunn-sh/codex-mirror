@@ -40,7 +40,7 @@ jobs:
       - name: Clean Go
         run: go clean
       - name: Auto-commit
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: Automated update
           add_options: '--all'
