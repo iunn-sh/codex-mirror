@@ -1,0 +1,1232 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>積體電路電路布局保護法 - Codex Mirror</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+Traditional+Chinese:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans Traditional Chinese";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Codex Mirror" class="md-header__button md-logo" aria-label="Codex Mirror" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Codex Mirror
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              積體電路電路布局保護法
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/iunn-sh/codex-mirror" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iunn-sh/codex-mirror
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Codex Mirror" class="md-nav__button md-logo" aria-label="Codex Mirror" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Codex Mirror
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/iunn-sh/codex-mirror" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iunn-sh/codex-mirror
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E6%86%B2%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    中華民國憲法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E6%86%B2%E6%B3%95%E5%A2%9E%E4%BF%AE%E6%A2%9D%E6%96%87/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    中華民國憲法增修條文
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%A1%8C%E6%94%BF%E7%A8%8B%E5%BA%8F%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    行政程序法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%A1%8C%E6%94%BF%E8%A8%B4%E8%A8%9F%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    行政訴訟法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E5%88%91%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    中華民國刑法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%88%91%E4%BA%8B%E8%A8%B4%E8%A8%9F%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    刑事訴訟法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B0%91%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    民法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B0%91%E4%BA%8B%E8%A8%B4%E8%A8%9F%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    民事訴訟法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%85%AC%E5%8F%B8%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    公司法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%BF%9D%E9%9A%AA%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    保險法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%AD%89%E5%88%B8%E4%BA%A4%E6%98%93%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    證券交易法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8B%9E%E5%8B%95%E5%9F%BA%E6%BA%96%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    勞動基準法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 一 章 總則
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 一 章 總則">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 1 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 2 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 3 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 4 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 5 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 二 章 登記之申請
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 二 章 登記之申請">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 6 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 7 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 8 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 9 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 10 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 11 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 12 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 13 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 14 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 三 章 電路布局權
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 三 章 電路布局權">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 15 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 16 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 17 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 18 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 19 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 20 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 21 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 22 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 23 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 24 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 25 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 26 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 27 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 28 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 四 章 侵害之救濟
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 四 章 侵害之救濟">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#29" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 29 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#30" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 30 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 31 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 32 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 33 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 34 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 五 章 附則
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第 五 章 附則">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 35 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 36 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 37 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 38 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#39" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 39 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#40" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 40 條
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      第 41 條
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">積體電路電路布局保護法</h1>
+<h2 id="_2">第 一 章 總則</h2>
+<h3 id="1">第 1 條</h3>
+<p>為保障積體電路電路布局，並調和社會公共利益，以促進國家科技及經濟之健全發展，特制定本法。</p>
+<h3 id="2">第 2 條</h3>
+<p>本法用詞定義如左：
+一、積體電路：將電晶體、電容器、電阻器或其他電子元件及其間之連接線路，集積在半導體材料上或材料中，而具有電子電路功能之成品或半成品。
+二、電路布局：指在積體電路上之電子元件及接續此元件之導線的平面或立體設計。
+三、散布：指買賣、授權、轉讓或為買賣、授權、轉讓而陳列。
+四、商業利用：指為商業目的公開散布電路布局或含該電路布局之積體電路。
+五、複製：以光學、電子或其他方式，重複製作電路布局或含該電路布局之積體電路。
+六、還原工程：經分析、評估積體電路而得知其原電子電路圖或功能圖，並據以設計功能相容之積體電路之電路布局。</p>
+<h3 id="3">第 3 條</h3>
+<p>本法主管機關為經濟部。
+前項業務由經濟部指定專責機關辦理。必要時，得將部分事項委託相關之公益法人或團體。</p>
+<h3 id="4">第 4 條</h3>
+<p>電路布局專責機關及前條第二項後段所規定之公益法人或團體所屬人員，對於職務或業務上所知悉或持有之秘密不得洩漏。</p>
+<h3 id="5">第 5 條</h3>
+<p>外國人合於左列各款之一者，得就其電路布局依本法申請登記：
+一、其所屬國家與中華民國共同參加國際條約或有相互保護電路布局之條約、協定或由團體、機構互訂經經濟部核准保護電路布局之協議，或對中華民國國民之電路布局予以保護且經查證屬實者。
+二、首次商業利用發生於中華民國管轄境內者。但以該外國人之本國對中華民國國民，在相同之情形下，予以保護且經查證屬實者為限。</p>
+<h2 id="_3">第 二 章 登記之申請</h2>
+<h3 id="6">第 6 條</h3>
+<p>電路布局之創作人或其繼受人，除本法另有規定外，就其電路布局得申請登記。
+前項創作人或繼受人為數人時，應共同申請登記。但契約另有訂定者，從其約定。</p>
+<h3 id="7">第 7 條</h3>
+<p>受雇人職務上完成之電路布局創作，由其雇用人申請登記。但契約另有訂定者，從其約定。
+出資聘人完成之電路布局創作，準用前項之規定。
+前二項之受雇人或受聘人，本於其創作之事實，享有姓名表示權。</p>
+<h3 id="8">第 8 條</h3>
+<p>申請人申請電路布局登記及辦理電路布局有關事項，得委任在中華民國境內有住所之代理人辦理之。
+在中華民國境內無住所或營業所者，申請電路布局登記及辦理電路布局有關事項，應委任在中華民國境內有住所之代理人辦理之。</p>
+<h3 id="9">第 9 條</h3>
+<p>二人以上共同申請，或為電路布局權之共有者，除約定有代表者外，辦理一切程序時，應共同連署，並指定其中一人為應受送達人。未指定應受送達人者，電路布局專責機關除以第一順序申請人為應受送達人外，並應將送達事項通知其他人。</p>
+<h3 id="10">第 10 條</h3>
+<p>申請電路布局登記，應備具申請書、說明書、圖式或照片，向電路布局專責機關為之。申請時已商業利用而有積體電路成品者，應檢附該成品。
+前項圖式、照片或積體電路成品，涉及積體電路製造方法之秘密者，申請人得以書面敘明理由，向電路布局專責機關申請以其他資料代之。
+受讓人或繼承人申請時應敘明創作人姓名，並檢附證明文件。</p>
+<h3 id="11">第 11 條</h3>
+<p>前條規定之申請書應載明左列事項：
+一、申請人姓名、國籍、住居所；如為法人，其名稱、事務所及其代表人姓名。
+二、創作人姓名、國籍、住居所；如為法人，其名稱、事務所及其代表人姓名。
+三、創作名稱及創作日。
+四、申請日前曾商業利用者，其首次商業利用之年、月、日。</p>
+<h3 id="12">第 12 條</h3>
+<p>申請電路布局登記以規費繳納及第十條所規定之文件齊備之日為申請日。</p>
+<h3 id="13">第 13 條</h3>
+<p>電路布局首次商業利用後逾二年者，不得申請登記。</p>
+<h3 id="14">第 14 條</h3>
+<p>凡申請人為有關電路布局登記及其他程序，不合法定程式者，電路布局專責機關應通知限期補正；屆期未補正者，應不受理。但在處分前補正者，仍應受理。
+申請人因天災或不可歸責於己之事由延誤法定期間者，於其原因消滅後三十日內，得以書面敘明理由向電路布局專責機關申請回復原狀。但延誤法定期間已逾一年者，不在此限。
+申請回復原狀，應同時補行期間內應為之行為。</p>
+<h2 id="_4">第 三 章 電路布局權</h2>
+<h3 id="15">第 15 條</h3>
+<p>電路布局非經登記，不得主張本法之保護。
+電路布局經登記者，應發給登記證書。</p>
+<h3 id="16">第 16 條</h3>
+<p>本法保護之電路布局權，應具備左列各款要件：
+一、由於創作人之智慧努力而非抄襲之設計。
+二、在創作時就積體電路產業及電路布局設計者而言非屬平凡、普通或習知者。
+以組合平凡、普通或習知之元件或連接線路所設計之電路布局，應僅就其整體組合符合前項要件者保護之。</p>
+<h3 id="17">第 17 條</h3>
+<p>電路布局權人專有排除他人未經其同意而為左列各款行為之權利：
+一、複製電路布局之一部或全部。
+二、為商業目的輸入、散布電路布局或含該電路布局之積體電路。</p>
+<h3 id="18">第 18 條</h3>
+<p>電路布局權不及於左列各款情形：
+一、為研究、教學或還原工程之目的，分析或評估他人之電路布局，而加以複製者。
+二、依前款分析或評估之結果，完成符合第十六條之電路布局或據以製成積體電路者。
+三、合法複製之電路布局或積體電路所有者，輸入或散布其所合法持有之電路布局或積體電路。
+四、取得積體電路之所有人，不知該積體電路係侵害他人之電路布局權，而輸入、散布其所持有非法製造之積體電路者。
+五、由第三人自行創作之相同電路布局或積體電路。</p>
+<h3 id="19">第 19 條</h3>
+<p>電路布局權期間為十年，自左列二款中較早發生者起算：
+一、電路布局登記之申請日。
+二、首次商業利用之日。</p>
+<h3 id="20">第 20 條</h3>
+<p>電路布局權人之姓名或名稱有變更者，應申請變更登記。</p>
+<h3 id="21">第 21 條</h3>
+<p>數人共有電路布局權者，其讓與、授權或設定質權，應得共有人全體之同意。
+電路布局權共有人未得其他共有人全體之同意，不得將其應有部分讓與、授權或設定質權。各共有人，無正當理由者，不得拒絕同意。
+電路布局權之共有人拋棄其應有部分者，其應有部分由其他共有人依其應有部分之比例分配之。
+前項規定，於電路布局權之共有人中有死亡而無繼承人或解散後無承受人之情形者，準用之。</p>
+<h3 id="22">第 22 條</h3>
+<p>電路布局權有左列各款情事之一者，應由各當事人署名，檢附契約或證明文件，向電路布局專責機關申請登記，非經登記，不得對抗善意第三人：
+一、讓與。
+二、授權。
+三、質權之設定、移轉、變更、消滅。
+電路布局權之繼承，應檢附證明文件，向電路布局專責機關申請換發登記證書。</p>
+<h3 id="23">第 23 條</h3>
+<p>以電路布局權為標的而設定質權者，除另有約定外，質權人不得利用電路布局。</p>
+<h3 id="24">第 24 條</h3>
+<p>為增進公益之非營利使用，電路布局專責機關得依申請，特許該申請人實施電路布局權。其實施應以供應國內市場需要為主。
+電路布局權人有不公平競爭之情事，經法院判決或行政院公平交易委員會處分確定者，雖無前項之情形，電路布局專責機關亦得依申請，特許該申請人實施電路布局權。
+電路布局專責機關接到特許實施申請書後，應將申請書副本送達電路布局權人，限期三個月內答辯；逾期不答辯者，得逕行處理之。
+特許實施權不妨礙他人就同一電路布局權再取得實施權。
+特許實施權人應給與電路布局權人適當之補償金，有爭執時，由電路布局專責機關核定之。
+特許實施權，除應與特許實施有關之營業一併移轉外，不得轉讓、授權或設定質權。
+第一項或第二項所列舉特許實施之原因消滅時，電路布局專責機關得依申請終止特許實施。
+特許實施權人違反特許實施之目的時，電路布局專責機關得依電路布局權人之申請或依職權撤銷其特許實施權。</p>
+<h3 id="25">第 25 條</h3>
+<p>有左列情事之一者，除本法另有規定外，電路布局權當然消滅：
+一、電路布局權期滿者，自期滿之次日消滅。
+二、電路布局權人死亡，無人主張其為繼承人者，電路布局權自依法應歸屬國庫之日消滅。
+三、法人解散者，電路布局權自依法應歸屬地方自治團體之日消滅。
+四、電路布局權人拋棄者，自其書面表示之日消滅。</p>
+<h3 id="26">第 26 條</h3>
+<p>電路布局權人未得被授權人或質權人之承諾，不得拋棄電路布局權。
+電路布局權之拋棄，不得部分為之。</p>
+<h3 id="27">第 27 條</h3>
+<p>有左列情形之一者，電路布局專責機關應依職權或據利害關係人之申請，撤銷電路布局登記，並於撤銷確定後，限期追繳登記證書，無法追回者，應公告證書作廢：
+一、經法院判決確定無電路布局權者。
+二、電路布局之登記違反第五條至第七條、第十條、第十三條、第三十八條或第三十九條之規定者。
+三、電路布局權違反第十六條之規定者。
+前項情形，電路布局專責機關應將申請書副本或依職權審查理由書送達電路布局權人或其代理人，限期三十日內答辯；屆期不答辯者，逕予審查。
+前項答辯期間，電路布局權人得先行以書面敘明理由，申請展延。但以一次為限。</p>
+<h3 id="28">第 28 條</h3>
+<p>申請有關電路布局登記，符合本法規定者，電路布局專責機關應登記於電路布局權簿，並刊登於公報。
+電路布局權之撤銷、消滅或拋棄亦同。</p>
+<h2 id="_5">第 四 章 侵害之救濟</h2>
+<h3 id="29">第 29 條</h3>
+<p>電路布局權人對於侵害其電路布局權者，得請求損害賠償，並得請求排除其侵害；事實足證有侵害之虞者，得請求防止之。
+專屬被授權人亦得為前項請求。但以電路布局權人經通知後而不為前項請求，且契約無相反約定者為限。
+前二項規定於第三人明知或有事實足證可得而知，為商業目的輸入或散布之物品含有不法複製之電路布局所製成之積體電路時，亦適用之。但侵害人將該積體電路與物品分離者，不在此限。
+電路布局權人或專屬被授權人行使前項權利時，應檢附鑑定書。
+數人共同不法侵害電路布局權者，連帶負損害賠償責任。</p>
+<h3 id="30">第 30 條</h3>
+<p>依前條請求損害賠償時，得就左列各款擇一計算其損害：
+一、依民法第二百十六條之規定。但不能提供證據方法以證明其損害時，被侵害人得就其利用電路布局通常可獲得之利益，減除受侵害後利用同一電路布局所得之利益，以其差額為所受損害。
+二、侵害電路布局權者，因侵害所得之利益。侵害者不能就其成本或必要費用舉證時，以販賣該電路布局或含該電路布局之積體電路之全部收入為所得利益。
+三、請求法院依侵害情節，酌定新臺幣五百萬元以下之金額。</p>
+<h3 id="31">第 31 條</h3>
+<p>第十八條第四款之所有人於電路布局權人以書面通知侵害之事實並檢具鑑定書後，為商業目的繼續輸入、散布善意取得之積體電路者，電路布局權人得向其請求相當於電路布局通常利用可收取權利金之損害賠償。</p>
+<h3 id="32">第 32 條</h3>
+<p>第二十九條之被侵害人，得請求銷燬侵害電路布局權之積體電路及將判決書內容全部或一部登載新聞紙；其費用由敗訴人負擔。</p>
+<h3 id="33">第 33 條</h3>
+<p>外國法人或團體就本法規定事項得提起民事訴訟，不以業經認許者為限。</p>
+<h3 id="34">第 34 條</h3>
+<p>法院為處理電路布局權訴訟案件，得設立專業法庭或指定專人辦理。</p>
+<h2 id="_6">第 五 章 附則</h2>
+<h3 id="35">第 35 條</h3>
+<p>本法之規定，不影響電路布局權人或第三人依其他法律所取得之權益。</p>
+<h3 id="36">第 36 條</h3>
+<p>電路布局專責機關為處理有關電路布局權之鑑定、爭端之調解及特許實施等事宜，得設鑑定暨調解委員會。
+前項委員會之設置辦法，由主管機關定之。</p>
+<h3 id="37">第 37 條</h3>
+<p>電路布局權簿及檔案，應由電路布局專責機關永久保存，惟得以微縮底片、磁碟、磁帶、光碟等方式儲存。</p>
+<h3 id="38">第 38 條</h3>
+<p>依本法所為之各項申請，應繳納規費；其金額由主管機關定之。</p>
+<h3 id="39">第 39 條</h3>
+<p>本法施行前二年內為首次商業利用者，得於本法施行後六個月內申請登記。</p>
+<h3 id="40">第 40 條</h3>
+<p>本法施行細則，由主管機關定之。</p>
+<h3 id="41">第 41 條</h3>
+<p>本法自公布後六個月施行。
+本法修正條文自公布日施行。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
