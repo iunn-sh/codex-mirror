@@ -27,13 +27,13 @@
 ## with Docker
 docker run --rm $(docker build -t codex-mirror -q .)
 docker run --rm $(docker build -t codex-mirror --progress=plain --no-cache .) # debug
-## with Golang (tested with 1.25)
+## with Golang (tested with 1.27)
 go fmt ./...
 go mod tidy
 go run .
 
 # Mkdocs Material: host frontend
-docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material:9.6.17
+docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material:9.7.7
 # visit http://localhost:8000/ from browser
 ```
 
